@@ -1,6 +1,7 @@
 package com.github.calve.repository.datajpa;
 
 import com.github.calve.model.Menu;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -40,8 +41,17 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
 
     Menu getMenuByDateAndRestaurantId(LocalDate date, Integer restaurantId);
 
+    @EntityGraph(attributePaths = {"restaurant", "items"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT m FROM Menu m WHERE m.date=?1")
     List<Menu> findAllByDate(LocalDate date);
 
+/*    @EntityGraph(attributePaths = {"meals"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT u FROM User u WHERE u.id=?1")
+    User getWithMeals(int id);*/
+
+    @EntityGraph(attributePaths = {"restaurant", "items"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT m FROM Menu m WHERE m.restaurant.id=?1")
+    Menu getWithMI(Integer id);
 
 
     /*@SuppressWarnings("JpaQlInspection")

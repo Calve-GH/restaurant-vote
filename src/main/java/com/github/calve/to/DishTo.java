@@ -10,6 +10,9 @@ public class DishTo implements HasId {
 
     private Double price;
 
+    public DishTo() {
+    }
+
     public DishTo(String name, Double price) {
         this.id = null;
         this.name = name;

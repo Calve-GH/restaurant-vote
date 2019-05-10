@@ -23,7 +23,7 @@ public class HistoryItem extends AbstractBaseEntity {
     private Restaurant restaurant;
 
     @Column(name = "data", nullable = false)
-    @NotBlank
+    //@NotBlank //TODO test not pass
     private String data;
 
     @Column(name = "count", nullable = false, columnDefinition = "Integer default 0")

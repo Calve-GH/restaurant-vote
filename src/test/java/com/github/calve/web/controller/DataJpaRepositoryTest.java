@@ -1,4 +1,4 @@
-package com.github.calve.controller;
+package com.github.calve.web.controller;
 
 /*@SpringJUnitWebConfig(locations = {
         "classpath:spring/spring-app.xml",
@@ -9,7 +9,7 @@ package com.github.calve.controller;
 public class DataJpaRepositoryTest {
 
 /*    @Autowired
-    private RestController restController;
+    private TempRestController restController;
 
     @Test
     void getAllDishes() { // GET ALL DISHES FOR DATE AND RESTAURANT ID

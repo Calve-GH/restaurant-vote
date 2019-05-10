@@ -1,8 +1,11 @@
 package com.github.calve.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.calve.util.DateTimeUtil;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -10,6 +13,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.EnumSet;
@@ -28,10 +32,12 @@ public class User extends AbstractNamedEntity {
     @Column(name = "password", nullable = false)
     @NotBlank
     @Size(min = 5, max = 100)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date registered = new Date();
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
@@ -54,21 +60,20 @@ public class User extends AbstractNamedEntity {
     }
 
     public User(User u) {
-        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getRestaurant(), u.isEnabled(), u.getRegistered(), u.getRoles());
+        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getRestaurant(), u.isEnabled(), u.getRoles());
     }
 
-    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
-        this(id, name, email, password, null, true, new Date(), EnumSet.of(role, roles));
+    public User(Integer id, String name, String email, String password, Restaurant restaurant, Role role, Role... roles) {
+        this(id, name, email, password, restaurant, true, EnumSet.of(role, roles));
     }
 
     public User(Integer id, String name, String email, String password, Restaurant restaurant, boolean enabled,
-                Date registered, Collection<Role> roles) {
+                Collection<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.restaurant = restaurant;
         this.enabled = enabled;
-        this.registered = registered;
         setRoles(roles);
     }
 
@@ -128,8 +133,6 @@ public class User extends AbstractNamedEntity {
     public String toString() {
         return "User{" +
                 "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", registered=" + registered +
                 ", enabled=" + enabled +
                 ", roles=" + roles +
                 ", restaurant=" + restaurant +

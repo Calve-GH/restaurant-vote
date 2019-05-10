@@ -1,5 +1,8 @@
 package com.github.calve.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,16 +33,19 @@ public class Menu extends AbstractBaseEntity {
     //@Column(name = "role")
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "menu")
     //@BatchSize(size = 200)
+    @JsonIgnoreProperties(value = "menu", allowSetters=true)
     private Set<MenuItem> items = new HashSet<>(0);
 
 
     @Column(name = "vote_count", nullable = false)
     private Integer voteCount = 0;
 
-    public Menu(Integer id, @NotNull LocalDate date, Restaurant restaurant) {
+    public Menu(Integer id, @NotNull LocalDate date, Restaurant restaurant, Integer voteCount) {
         super(id);
         this.date = date;
         this.restaurant = restaurant;
+        if (voteCount != null)
+            this.voteCount = voteCount;
     }
 
     public Menu(@NotNull LocalDate date, Restaurant restaurant) {
@@ -93,16 +99,10 @@ public class Menu extends AbstractBaseEntity {
         this.voteCount = voteCount;
     }
 
-/*    public void addMenuItemToMenu(MenuItem item) {
-        item.setMenu(this);
-        this.items.add(item);
-    }*/
-
     @Override
     public String toString() {
         return "Menu{" +
-                "id=" + id +
-                ", date=" + date +
+                "date=" + date +
                 ", restaurant=" + restaurant +
                 ", items=" + items +
                 ", voteCount=" + voteCount +

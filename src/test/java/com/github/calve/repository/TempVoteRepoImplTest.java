@@ -1,7 +1,7 @@
 package com.github.calve.repository;
 
+import com.github.calve.model.HistoryItem;
 import com.github.calve.model.Menu;
-import com.github.calve.model.MenuItem;
 import com.github.calve.model.VoteLog;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +12,11 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.github.calve.repository.VoteTestData.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static com.github.calve.VoteTestData.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringJUnitWebConfig(locations = {
         "classpath:spring/spring-app.xml",
@@ -30,11 +27,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 class TempVoteRepoImplTest {
     @Autowired
+    private VoteRepository voteRepository;
+    @Autowired
     private TempVoteRepo voteRepo;
+    @Autowired
+    private MenuRepository menuRepository;
 
     @Test
     void getDailyMenu() {
-        Menu dailyMenu = voteRepo.getDailyMenu(restaurant_1.getId());
+        Menu dailyMenu = menuRepository.getDailyMenu(RESTAURANT_1.getId());
         addMenuItemsToTestMenu(MENU_1, MENU_ITEM_1, MENU_ITEM_2, MENU_ITEM_3, MENU_ITEM_4, MENU_ITEM_5);
         assertMatch(dailyMenu, MENU_1);
         assertMatch(dailyMenu.getRestaurant(), MENU_1.getRestaurant());
@@ -44,7 +45,7 @@ class TempVoteRepoImplTest {
 
     @Test
     void saveDailyMenu() {
-        Menu saved = voteRepo.saveDailyMenu(dishes, testAdmin);
+        Menu saved = menuRepository.saveDailyMenu(dishes, TEST_ADMIN_1.getId());
         addMenuItemsToTestMenu(MENU_3, MENU_ITEM_6, MENU_ITEM_7, MENU_ITEM_8, MENU_ITEM_9);
         assertMatch(saved, MENU_3);
         assertMatch(saved.getRestaurant(), MENU_3.getRestaurant());
@@ -53,7 +54,7 @@ class TempVoteRepoImplTest {
 
     @Test
     void getVoteList() {
-        List<Menu> voteList = voteRepo.getVoteList();
+        List<Menu> voteList = voteRepository.getVoteList();
         addMenuItemsToTestMenu(MENU_1, MENU_ITEM_1, MENU_ITEM_2, MENU_ITEM_3, MENU_ITEM_4, MENU_ITEM_5);
         assertMatch(voteList, MENU_1, MENU_2);
         assertMatch(voteList.stream().map(Menu::getRestaurant)
@@ -64,27 +65,30 @@ class TempVoteRepoImplTest {
 
     @Test
     void getVoteHistory() {
-        assertMatch(voteRepo.getVoteHistory(), HISTORY_ITEM_1, HISTORY_ITEM_3, HISTORY_ITEM_2);
+        List<HistoryItem> voteHistory = voteRepository.getVoteHistory();
+        voteHistory.forEach(System.out::println);
+        assertMatch(voteHistory, HISTORY_ITEM_1, HISTORY_ITEM_3, HISTORY_ITEM_2);
     }
 
     @Test
     void getVoteHistoryByRestaurant() {
-        assertMatch(voteRepo.getVoteHistoryByRestaurant(restaurant_1.getId()), HISTORY_ITEM_1, HISTORY_ITEM_2);
+        assertMatch(voteRepository.getVoteHistoryByRestaurant(RESTAURANT_1.getId()), HISTORY_ITEM_1, HISTORY_ITEM_2);
     }
 
     @Test
     void voteUserSuccess() {
-        voteRepo.vote(testUser, restaurant_1);
+        voteRepository.vote(TEST_USER.getId(), RESTAURANT_1.getId());
         List<String> list = voteRepo.getAllLogs().stream().map(VoteLog::toString).collect(Collectors.toList());
-        assertTrue(list.contains(VOTE_LOG_1.toString()));
-        assertEquals(voteRepo.getDailyMenu(restaurant_1.getId()).getVoteCount(), 12);
+        assertTrue(list.contains(VOTE_LOG_1.toString())); //TODO WRONG LDT FORMAT Сравнение по строкам
+        // TODO убрал из User.toString дату ибо из БД тянется с наносеками а там различия, пароль тоже убрал
+        assertEquals(menuRepository.getDailyMenu(RESTAURANT_1.getId()).getVoteCount(), 12);
     }
 
     @Test
     void unlockUserVote() {
-        voteRepo.unlockVote(testAdmin.getId());
+        voteRepository.unlockVote(TEST_ADMIN_1.getId());
         assertEquals(voteRepo.getAllLogs().size(), 1);
-        assertEquals(voteRepo.getDailyMenu(restaurant_1.getId()).getVoteCount(), 10);
+        assertEquals(menuRepository.getDailyMenu(RESTAURANT_1.getId()).getVoteCount(), 10);
     }
 
     @Test
@@ -95,9 +99,5 @@ class TempVoteRepoImplTest {
     void login() {
     }
 
-    private void addMenuItemsToTestMenu(Menu menu, MenuItem... args) {
-        Set<MenuItem> items = new HashSet<>(
-                Arrays.asList(args));
-        menu.setItems(items);
-    }
+
 }

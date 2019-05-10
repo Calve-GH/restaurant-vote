@@ -21,10 +21,12 @@ public interface CrudVoteLogRepo extends JpaRepository<VoteLog, Integer> {
     int delete(@Param("id") int userId);
 
     @Transactional
+    @Override
     VoteLog save(VoteLog voteLog);
 
     List<VoteLog> findAll();
 
     @Transactional
+    @Override
     void deleteAll();
 }

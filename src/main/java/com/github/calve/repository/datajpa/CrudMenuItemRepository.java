@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional(readOnly = true)
 public interface CrudMenuItemRepository extends JpaRepository<MenuItem, Integer> {
     @Transactional
     MenuItem save(MenuItem item);
@@ -16,4 +17,8 @@ public interface CrudMenuItemRepository extends JpaRepository<MenuItem, Integer>
     List<MenuItem> findByMenuId(Integer id);
 
     List<MenuItem> findAll();
+
+    @Transactional
+    @Override
+    void deleteAll();
 }

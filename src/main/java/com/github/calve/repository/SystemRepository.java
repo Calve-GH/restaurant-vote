@@ -5,11 +5,11 @@ import com.github.calve.model.VoteLog;
 
 import java.util.List;
 
-public interface TempVoteRepo {
+public interface SystemRepository {
 
-    List<VoteLog> getAllLogs();
+    void resetAndLogVoteSystem();
 
     List<MenuItem> getMenuItems();
 
-    VoteLog findByUserId(Integer userId);
+    List<VoteLog> getVoteLogs();
 }

@@ -11,10 +11,12 @@
         </bean>
     -->
     <import resource="spring-tools.xml"/>
-    <context:component-scan base-package="com.github.calve.controller"/>
+    <import resource="spring-security.xml"/>
+<!--    <context:component-scan base-package="com.github.calve.web.controller"/>-->
     <!-- Not necessary, already included with component-scan -->
     <!--<context:annotation-config/>-->
 
     <!--    <context:component-scan base-package=""/>-->
+    <context:component-scan base-package="com.github.**.service"/>
 
 </beans>
