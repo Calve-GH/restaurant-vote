@@ -22,7 +22,9 @@ public class UserTo extends BaseTo implements Serializable {
     @Size(min = 5, max = 32, message = "length must between 5 and 32 characters")
     private String password;
 
-    private Restaurant restaurant;
+    private Restaurant restaurant = null;
+
+    private String newRestaurantName;
 
     public UserTo() {
     }
@@ -33,6 +35,27 @@ public class UserTo extends BaseTo implements Serializable {
         this.email = email;
         this.password = password;
         this.restaurant = restaurant;
+    }
+    public UserTo(Integer id, String name, String email, String password, String restaurant) {
+        super(id);
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.newRestaurantName = restaurant;
+    }
+
+    public boolean isRestaurantEmpty() {
+        if (newRestaurantName == null) return true;
+        newRestaurantName = newRestaurantName.trim();
+        return newRestaurantName.length() < 2;
+    }
+
+    public String getNewRestaurantName() {
+        return newRestaurantName;
+    }
+
+    public void setNewRestaurantName(String newRestaurantName) {
+        this.newRestaurantName = newRestaurantName;
     }
 
     public String getPassword() {
@@ -73,7 +96,6 @@ public class UserTo extends BaseTo implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-//                ", caloriesPerDay='" + caloriesPerDay + '\'' +
                 '}';
     }
 }

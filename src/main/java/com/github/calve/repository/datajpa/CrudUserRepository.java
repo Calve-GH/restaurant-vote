@@ -1,6 +1,7 @@
 package com.github.calve.repository.datajpa;
 
 import com.github.calve.model.User;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,5 +25,6 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findById(Integer id);
 
+    @EntityGraph(attributePaths = {"restaurant", "roles"}, type = EntityGraph.EntityGraphType.LOAD)
     User getByEmail(String email);
 }

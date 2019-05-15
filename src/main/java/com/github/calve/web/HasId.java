@@ -1,4 +1,4 @@
-package com.github.calve.model;
+package com.github.calve.web;
 
 public interface HasId {
     Integer getId();

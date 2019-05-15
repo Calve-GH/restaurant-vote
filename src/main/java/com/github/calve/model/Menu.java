@@ -1,18 +1,20 @@
 package com.github.calve.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
 @Table(name = "menu")
 public class Menu extends AbstractBaseEntity {
@@ -28,11 +30,7 @@ public class Menu extends AbstractBaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
-    //@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    //@CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    //@Column(name = "role")
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "menu")
-    //@BatchSize(size = 200)
     @JsonIgnoreProperties(value = "menu", allowSetters=true)
     private Set<MenuItem> items = new HashSet<>(0);
 

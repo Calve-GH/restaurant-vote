@@ -1,5 +1,6 @@
 package com.github.calve.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Entity
 @Table(name = "history")
 public class HistoryItem extends AbstractBaseEntity {
@@ -23,10 +25,10 @@ public class HistoryItem extends AbstractBaseEntity {
     private Restaurant restaurant;
 
     @Column(name = "data", nullable = false)
-    //@NotBlank //TODO test not pass
+    @NotBlank//TODO
     private String data;
 
-    @Column(name = "count", nullable = false, columnDefinition = "Integer default 0")
+    @Column(name = "vote_count", nullable = false, columnDefinition = "Integer default 0")
     @NotNull
     private Integer count;
 

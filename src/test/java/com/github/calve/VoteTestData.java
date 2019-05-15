@@ -58,11 +58,11 @@ public class VoteTestData {
     public static final VoteLog VOTE_LOG_1 = new VoteLog(TEST_USER, RESTAURANT_1);
 
     public static final HistoryItem HISTORY_ITEM_1 = new HistoryItem(START_SEQ + 22, LocalDate.now().minusDays(1),
-            RESTAURANT_1, "SOME DISHES LIST WITH PRICES 1", 112);
+            RESTAURANT_1, "Soup:10.5 French fries:10.0 Coffee:5.3", 112);
     public static final HistoryItem HISTORY_ITEM_2 = new HistoryItem(START_SEQ + 23, LocalDate.now().minusDays(2),
-            RESTAURANT_1, "SOME DISHES LIST WITH PRICES 2", 79);
+            RESTAURANT_1, "Hamburger:13.12 Tea:3.0", 79);
     public static final HistoryItem HISTORY_ITEM_3 = new HistoryItem(START_SEQ + 24, LocalDate.now().minusDays(1),
-            RESTAURANT_2, "SOME DISHES LIST WITH PRICES 3", 179);
+            RESTAURANT_2, "Soup:7.0 Hamburger:11.0 Tea:3.4 Coffee:4.3", 179);
 
     public static final List<HistoryItem> HISTORY_ITEM_LIST = Arrays.asList(HISTORY_ITEM_1, HISTORY_ITEM_2, HISTORY_ITEM_3);
 

@@ -3,20 +3,8 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!--
-        <bean class="ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepositoryImpl" id="inmemoryUserRepository"/>
-
-        <bean class="ru.javawebinar.topjava.service.UserServiceImpl">
-            <constructor-arg name="repository" ref="inmemoryUserRepository"/>
-        </bean>
-    -->
     <import resource="spring-tools.xml"/>
     <import resource="spring-security.xml"/>
-<!--    <context:component-scan base-package="com.github.calve.web.controller"/>-->
-    <!-- Not necessary, already included with component-scan -->
-    <!--<context:annotation-config/>-->
-
-    <!--    <context:component-scan base-package=""/>-->
     <context:component-scan base-package="com.github.**.service"/>
 
 </beans>

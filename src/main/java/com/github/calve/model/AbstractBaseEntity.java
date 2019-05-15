@@ -1,5 +1,6 @@
 package com.github.calve.model;
 
+import com.github.calve.web.HasId;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;

@@ -3,6 +3,7 @@ package com.github.calve.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.calve.util.DateTimeUtil;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
 
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
 @Table(name = "users")
 public class User extends AbstractNamedEntity {
@@ -47,14 +49,13 @@ public class User extends AbstractNamedEntity {
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
-//    @Fetch(FetchMode.SUBSELECT)
     @BatchSize(size = 200)
     private Set<Role> roles;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id", nullable = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Restaurant restaurant;
+    private Restaurant restaurant = null;
 
     public User() {
     }

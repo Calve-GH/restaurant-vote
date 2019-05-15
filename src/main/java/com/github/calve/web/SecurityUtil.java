@@ -29,7 +29,4 @@ public class SecurityUtil {
         return get().getUserTo().getId();
     }
 
-/*    public static int authUserCaloriesPerDay() {
-        return get().getUserTo().getCaloriesPerDay();
-    }*/
 }

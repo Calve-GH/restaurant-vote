@@ -1,6 +1,8 @@
 package com.github.calve.repository.datajpa;
 
 import com.github.calve.model.Menu;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,6 +20,8 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
     @Transactional
     void deleteById(Integer id);
 
+
+    @CacheEvict(value = "menus")
     @Override
     @Transactional
     Menu save(Menu item);
@@ -41,23 +45,13 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
 
     Menu getMenuByDateAndRestaurantId(LocalDate date, Integer restaurantId);
 
+    @Cacheable("menus")
     @EntityGraph(attributePaths = {"restaurant", "items"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.date=?1")
     List<Menu> findAllByDate(LocalDate date);
-
-/*    @EntityGraph(attributePaths = {"meals"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT u FROM User u WHERE u.id=?1")
-    User getWithMeals(int id);*/
 
     @EntityGraph(attributePaths = {"restaurant", "items"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.restaurant.id=?1")
     Menu getWithMI(Integer id);
 
-
-    /*@SuppressWarnings("JpaQlInspection")
-    @Query("SELECT m from Meal m WHERE m.user.id=:userId AND m.dateTime BETWEEN :startDate AND :endDate ORDER BY m.dateTime DESC")
-    List<Meal> getBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("userId") int userId);
-*/
-/*    @Query("SELECT m FROM Meal m JOIN FETCH m.user WHERE m.id = ?1 and m.user.id = ?2")
-    Meal getWithUser(int id, int userId);*/
 }

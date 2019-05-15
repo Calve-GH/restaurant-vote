@@ -18,7 +18,4 @@
                   p:cacheManagerUri="classpath:cache/ehcache.xml"/>
         </property>
     </bean>
-
-    <bean id="localVoteCache" class="com.github.calve.cache.LocalVoteCache" />
-
 </beans>

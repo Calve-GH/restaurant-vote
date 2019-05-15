@@ -1,6 +1,6 @@
 package com.github.calve.to;
 
-import com.github.calve.model.HasId;
+import com.github.calve.web.HasId;
 
 public abstract class BaseTo implements HasId {
     protected Integer id;

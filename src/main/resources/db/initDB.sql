@@ -79,7 +79,7 @@ CREATE TABLE history
     date          DATE    NOT NULL,
     restaurant_id INTEGER NOT NULL,
     data          VARCHAR NOT NULL,
-    count         INTEGER NOT NULL    DEFAULT 0,
+    vote_count         INTEGER NOT NULL    DEFAULT 0,
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );
 
@@ -95,7 +95,6 @@ BEGIN
         ON CONFLICT(restaurant_id) DO UPDATE
             SET vote_count = menu.vote_count + 1;
         RETURN NEW;
-
     END IF;
     RETURN NULL; -- result is ignored since this is an AFTER trigger
 END;

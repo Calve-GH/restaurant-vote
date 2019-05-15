@@ -7,19 +7,44 @@
 
     <!--<persistence directory="${user.home}/cache-data"/>-->
 
-    <cache-template name="expiryCache">
+    <cache-template name="dishCache">
         <expiry>
-            <ttl unit="minutes">5</ttl>
+            <ttl unit="hours">4</ttl>
         </expiry>
-        <heap unit="entries">5000</heap>
+        <heap>500</heap>
     </cache-template>
 
-    <cache-template name="singleNonExpiryCache">
+    <cache-template name="restaurantCache">
         <expiry>
-            <none/>
+            <ttl unit="hours">4</ttl>
         </expiry>
-        <heap>1</heap>
+        <heap>50</heap>
     </cache-template>
 
-    <cache alias="users" uses-template="singleNonExpiryCache"/>
+    <cache-template name="historyCache">
+        <expiry>
+            <ttl unit="hours">24</ttl>
+        </expiry>
+        <heap>1000</heap>
+    </cache-template>
+
+    <cache-template name="menuCache">
+        <expiry>
+            <ttl unit="minutes">1</ttl>
+        </expiry>
+        <heap>50</heap>
+    </cache-template>
+
+    <cache-template name="userCache">
+        <expiry>
+            <ttl unit="minutes">7</ttl>
+        </expiry>
+        <heap>100</heap>
+    </cache-template>
+
+    <cache alias="users" uses-template="userCache"/>
+    <cache alias="dishes" uses-template="dishCache"/>
+    <cache alias="history" uses-template="historyCache"/>
+    <cache alias="menus" uses-template="menuCache"/>
+    <cache alias="restaurants" uses-template="restaurantCache"/>
 </config>

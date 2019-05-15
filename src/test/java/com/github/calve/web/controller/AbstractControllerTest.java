@@ -1,8 +1,9 @@
 package com.github.calve.web.controller;
 
+import com.github.calve.repository.JpaUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
@@ -11,7 +12,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import com.github.calve.repository.JpaUtil;
 
 import javax.annotation.PostConstruct;
 
@@ -22,10 +22,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
         "classpath:spring/spring-mvc.xml",
         "classpath:spring/spring-db.xml"
 })
-//@WebAppConfiguration
-//@ExtendWith(SpringExtension.class)
 @Transactional
-@ActiveProfiles("datajpa")
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 abstract public class AbstractControllerTest {
 
@@ -38,14 +35,11 @@ abstract public class AbstractControllerTest {
 
     protected MockMvc mockMvc;
 
-/*    @Autowired
-    private CacheManager cacheManager;*/
+    @Autowired
+    private CacheManager cacheManager;
 
     @Autowired(required = false)
     private JpaUtil jpaUtil;
-
-/*    @Autowired
-    protected UserService userService;*/
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -58,12 +52,15 @@ abstract public class AbstractControllerTest {
                 .apply(springSecurity())
                 .build();
     }
-//TODO
     @BeforeEach
     void setUp() {
-/*        cacheManager.getCache("users").clear();
+        cacheManager.getCache("users").clear();
+        cacheManager.getCache("dishes").clear();
+        cacheManager.getCache("menus").clear();
+        cacheManager.getCache("history").clear();
+        cacheManager.getCache("restaurants").clear();
         if (jpaUtil != null) {
             jpaUtil.clear2ndLevelHibernateCache();
-        }*/
+        }
     }
 }

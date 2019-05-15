@@ -8,6 +8,7 @@ import com.github.calve.repository.datajpa.CrudMenuItemRepository;
 import com.github.calve.repository.datajpa.CrudMenuRepository;
 import com.github.calve.repository.datajpa.CrudVoteLogRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,22 +26,23 @@ public class DataJpaSystemRepositoryImpl implements SystemRepository {
     private CrudVoteLogRepo voteLogRepo;
     @Autowired
     private CrudHistoryRepo historyRepo;
-/*    @Autowired
-    private CrudUserRepository userRepo;
     @Autowired
-    private CrudRestaurantRepo restaurantRepo;*/
+    private CacheManager cacheManager;
+    @Autowired(required = false)
+    private JpaUtil jpaUtil;
 
     @Transactional
     @Override
     public void resetAndLogVoteSystem() {
-        List<Menu> dailyVoteList = menuRepo.findAllByDate(LocalDate.now()); //IT WORKS IN ~23.45 like example
+        List<Menu> dailyVoteList = menuRepo.findAllByDate(LocalDate.now());
+        System.out.println(dailyVoteList);
         historyRepo.saveAll(JpaUtil.convertMenuListToHistoryList(dailyVoteList));
 
         menuItemRepo.deleteAll();
         menuRepo.deleteAll();
         voteLogRepo.deleteAll();
 
-        //Clear all caches     //TODO      сбросить все кеши
+        clearCache();
     }
 
     @Override
@@ -51,5 +53,16 @@ public class DataJpaSystemRepositoryImpl implements SystemRepository {
     @Override
     public List<VoteLog> getVoteLogs() {
         return voteLogRepo.findAll();
+    }
+
+    private void clearCache() {
+        cacheManager.getCache("users").clear();
+        cacheManager.getCache("dishes").clear();
+        cacheManager.getCache("menus").clear();
+        cacheManager.getCache("history").clear();
+        cacheManager.getCache("restaurants").clear();
+        if (jpaUtil != null) {
+            jpaUtil.clear2ndLevelHibernateCache();
+        }
     }
 }

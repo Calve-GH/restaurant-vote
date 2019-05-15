@@ -19,12 +19,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-public class AdminRestControllerTest extends AbstractControllerTest {
+public class MenuRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = MenuRestController.REST_URL + "/";
 
     @Test
-    void testGet() throws Exception {
+    void testGetAuthenticatedFail() throws Exception {
+        mockMvc.perform(get(REST_URL))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void testGetDailyMenuSuccess() throws Exception {
         mockMvc.perform(get(MenuRestController.REST_URL)
                 .with(userHttpBasic(TEST_ADMIN_1)))
                 .andDo(print())
@@ -35,7 +41,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void testGetDishes() throws Exception {
+    void testGetDishesSuccess() throws Exception {
         mockMvc.perform(get(MenuRestController.REST_URL + "/dishes")
                 .with(userHttpBasic(TEST_ADMIN_1)))
                 .andExpect(status().isOk())
@@ -45,7 +51,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void testSaveMenu() throws Exception {
+    void testSaveMenuSuccess() throws Exception {
 
         ResultActions actions = mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -60,5 +66,15 @@ public class AdminRestControllerTest extends AbstractControllerTest {
         assertMatch(returned.getRestaurant(), MENU_3.getRestaurant());
         addMenuItemsToTestMenu(MENU_3, MENU_ITEM_6, MENU_ITEM_7, MENU_ITEM_8, MENU_ITEM_9);
         assertMatch(returned.getItems(), MENU_3.getItems());
+    }
+
+    @Test
+    void testSaveMenuOutOfRangeFail() throws Exception {
+        mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(Arrays.asList(DISH_TO_1)))
+                .with(userHttpBasic(TEST_ADMIN_1)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 }

@@ -20,9 +20,6 @@ public class JpaUtil {
     public void clear2ndLevelHibernateCache() {
         Session s = (Session) em.getDelegate();
         SessionFactory sf = s.getSessionFactory();
-//        sf.evict(User.class);
-//        sf.getCache().evictEntity(User.class, BaseEntity.START_SEQ);
-//        sf.getCache().evictEntityRegion(User.class);
         sf.getCache().evictAllRegions();
     }
 
@@ -35,9 +32,11 @@ public class JpaUtil {
     }
 
     private static String concatMenuItems(Menu menu) {
+        if (menu.getItems().isEmpty()) return "Empty";
         StringJoiner sj = new StringJoiner(" ");
         for (MenuItem item : menu.getItems()) {
             sj.add(item.getDish().getName());
+            sj.add(":");
             sj.add(item.getPrice().toString());
         }
         return sj.toString();
