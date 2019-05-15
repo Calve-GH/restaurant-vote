@@ -9,7 +9,7 @@
     <tbody>
         <tr>
         <td><strong>Title</strong></td>
-            <td><strong>Get admin menu</strong></td>
+            <td><strong>Get restaurant admin menu</strong></td>
         </tr>
         <tr>
             <td><strong>URL</strong></td>
@@ -26,28 +26,11 @@
         {
             "id": 100008,
             "date": "2019-05-15",
-            "restaurant": {
-        "id": 100000, "name": "Sweet bobaleh"
-            }
-            ,
-            "items": [ {
-        "id": 100009,
-        "dish": {
-            "id": 100003, "name": "Soup"
-        }
-        ,
-        "price": 5
-            }
-            ,
-            {
-        "id": 100011,
-        "dish": {
-            "id": 100005, "name": "Hamburger"
-        }
-        ,
-        "price": 15
-            }
-            ],
+            "restaurant": 
+                {"id": 100000, "name": "Sweet bobaleh"},
+            "items": 
+                [{"id": 100009,"dish":{"id": 100003, "name": "Soup"},"price": 5},
+                {"id": 100011,"dish": {"id": 100005, "name": "Hamburger"},"price": 15}],
             "voteCount": 11
         }
         </pre></td>
@@ -65,10 +48,6 @@
         <tr>
             <td><strong>Sample Request</strong></td>
             <td><code>/rest/admin/menu</code></td>
-        </tr>
-        <tr>
-            <td><strong>Notes</strong></td>
-            <td><em></em></td>
         </tr>
         <tr>
             <td><strong>Title</strong></td>
@@ -102,10 +81,6 @@
             <td><code>/rest/admin/menu/dishes</code></td>
         </tr>
         <tr>
-            <td><strong>Notes</strong></td>
-            <td><em></em></td>
-        </tr>
-        <tr>
             <td><strong>Title</strong></td>
             <td><strong>Vote list</strong></td>
         </tr>
@@ -126,35 +101,32 @@
             	    "id": 100021,
             			"date": "2019-05-15",
             			"restaurant": {
-            		    "id": 100001,"name": "ITAKA"
-            			},
-            		    "items": [],
+            		    "id": 100001,"name": "ITAKA"},
+            		    "items": [ {
+                        "id": 100009,
+                        "dish": {
+                        "id": 100003, "name": "Soup"},
+                        "price": 5},{
+                        "id": 100011,
+                        "dish": {
+                        "id": 100005, "name": "Hamburger"},
+                        "price": 15}],
             		    "voteCount": 1
-            		    },
+            		},
             		{
                     "id": 100008,
                         "date": "2019-05-15",
                         "restaurant": {
-                        "id": 100000, "name": "Sweet bobaleh"
-                        },
+                        "id": 100000, "name": "Sweet bobaleh"},
                         "items": [ {
                         "id": 100009,
                         "dish": {
-                        "id": 100003, "name": "Soup"
-                        }
-                        ,
-                        "price": 5
-                        }
-                        ,
-                        {
+                        "id": 100003, "name": "Soup"},
+                        "price": 5},{
                         "id": 100011,
                         "dish": {
-                        "id": 100005, "name": "Hamburger"
-                        }
-                        ,
-                        "price": 15
-                        }
-                        ],
+                        "id": 100005, "name": "Hamburger"},
+                        "price": 15}],
                         "voteCount": 11
                     }
             	]
@@ -162,11 +134,7 @@
         </tr>
         <tr>
             <td><strong>Sample Request</strong></td>
-            <td><code>/rest/profile/vote/100000</code></td>
-        </tr>
-        <tr>
-            <td><strong>Notes</strong></td>
-            <td><em></em></td>
+            <td><code>/rest/profile</code></td>
         </tr>
         <tr>
             <td><strong>Title</strong></td>
@@ -211,36 +179,32 @@
             <td><strong>Success Response</strong></td>
             <td><strong>Code:</strong> 200
             <strong>Content:</strong><pre>
-            [
-            {
-            "id": 100022,
-            "date": "2019-05-14",
-            "restaurant": {
-            "id": 100000,
-            "name": "Sweet bobaleh"
-            },
-            "data": "Soup:10.5 French fries:10.0 Coffee:5.3",
-            "count": 112
+            [{
+                "id": 100022,
+                "date": "2019-05-14",
+                "restaurant": {
+                "id": 100000,
+                "name": "Sweet bobaleh"},
+                "data": "Soup:10.5 French fries:10.0 Coffee:5.3",
+                "count": 112
             },
             {
-            "id": 100024,
-            "date": "2019-05-14",
-            "restaurant": {
-            "id": 100001,
-            "name": "ITAKA"
-            },
-            "data": "Soup:7.0 Hamburger:11.0 Tea:3.4 Coffee:4.3",
-            "count": 179
+                "id": 100024,
+                "date": "2019-05-14",
+                "restaurant": {
+                "id": 100001,
+                "name": "ITAKA"},
+                "data": "Soup:7.0 Hamburger:11.0 Tea:3.4 Coffee:4.3",
+                "count": 179
             },
             {
-            "id": 100023,
-            "date": "2019-05-13",
-            "restaurant": {
-            "id": 100000,
-            "name": "Sweet bobaleh"
-            },
-            "data": "Hamburger:13.12 Tea:3.0",
-            "count": 79
+                "id": 100023,
+                "date": "2019-05-13",
+                "restaurant": {
+                "id": 100000,
+                "name": "Sweet bobaleh"},
+                "data": "Hamburger:13.12 Tea:3.0",
+                "count": 79
             }
             ]
             </pre></td>
@@ -248,10 +212,6 @@
         <tr>
             <td><strong>Sample Request</strong></td>
             <td><code>/rest/profile/vote/history</code></td>
-        </tr>
-        <tr>
-            <td><strong>Notes</strong></td>
-            <td><em></em></td>
         </tr>
         <tr>
             <td><strong>Title</strong></td>
@@ -269,37 +229,28 @@
             <td><strong>Success Response</strong></td>
             <td><strong>Code:</strong> 200
             <strong>Content:</strong><pre>
-            [
-            {
-            "id": 100022,
-            "date": "2019-05-14",
-            "restaurant": {
-            "id": 100000,
-            "name": "Sweet bobaleh"
-            },
-            "data": "Soup:10.5 French fries:10.0 Coffee:5.3",
-            "count": 112
-            },
-            {
-            "id": 100023,
-            "date": "2019-05-13",
-            "restaurant": {
-            "id": 100000,
-            "name": "Sweet bobaleh"
-            },
-            "data": "Hamburger:13.12 Tea:3.0",
-            "count": 79
-            }
-            ]
+            [{
+                "id": 100022,
+                "date": "2019-05-14",
+                "restaurant": {
+                "id": 100000,
+                "name": "Sweet bobaleh"},
+                    "data": "Soup:10.5 French fries:10.0 Coffee:5.3",
+                    "count": 112}
+            ,{
+                "id": 100023,
+                "date": "2019-05-13",
+                "restaurant": {
+                "id": 100000,
+                "name": "Sweet bobaleh"},
+                    "data": "Hamburger:13.12 Tea:3.0",
+                    "count": 79
+            }]
             </pre></td>
         </tr>
         <tr>
             <td><strong>Sample Request</strong></td>
             <td><code>/rest/profile/vote/history/100000</code></td>
-        </tr>
-        <tr>
-            <td><strong>Notes</strong></td>
-            <td><em></em></td>
         </tr>
         <tr>
             <td><strong>Title</strong></td>
@@ -317,29 +268,21 @@
             <td><strong>Success Response</strong></td>
             <td><strong>Code:</strong> 200
             <strong>Content:</strong><pre>
-            [
+            [{
+                "id": 100000,
+                "name": "Sweet bobaleh"},
             {
-            "id": 100000,
-            "name": "Sweet bobaleh"
-            },
+                "id": 100001,
+                "name": "ITAKA"},
             {
-            "id": 100001,
-            "name": "ITAKA"
-            },
-            {
-            "id": 100002,
-            "name": "Hunter Village"
-            }
-            ]
+                "id": 100002,
+                "name": "Hunter Village"
+            }]
             </pre></td>
         </tr>
         <tr>
             <td><strong>Sample Request</strong></td>
             <td><code>/rest/profile/vote/restaurants</code></td>
-        </tr>
-        <tr>
-            <td><strong>Notes</strong></td>
-            <td><em></em></td>
         </tr>
         <tr>
             <td><strong>Title</strong></td>
@@ -360,10 +303,6 @@
         <tr>
             <td><strong>Sample Request</strong></td>
             <td><code>/rest/profile/register</code></td>
-        </tr>
-        <tr>
-            <td><strong>Notes</strong></td>
-            <td><em></em></td>
         </tr>
     </tbody>
 </table>
@@ -388,6 +327,16 @@ curl http://localhost:8080/restaurant_vote/rest/profile/vote/history/100000 -u i
 <p>Register new restaurants admin:
 curl -H "Content-Type: application/json;charset=UTF-8" -X POST -d '{"name":"newName","email":"newemail@ya.ru","password":"newPassword","newRestaurantName":"Mandondo"}'  http://localhost:8080/restaurant_vote/rest/profile/register</p>
 
+<p>Обоснование кэша:</p>
 
+<p>Dish, Restaurant - NONSTRICT_READ_WRITE, справочники, почти не меняются, время жизни 4 часа, Evict только в случае добавления.</p>
+<p>History - READ_ONLY, не меняется, время жизни 24ч, Clear только при системном рестарте.</p>
+<p>Menu - NONSTRICT_READ_WRITE, время жизни минута, Evict при Save, очень большое колличество запросов от пользователей, поэтому постоянно лезть в базу
+за синхронизированными данными не вариант.</p>
 
-
+<p>Хотелка(Сильно не бейте, 2 работы, семья, времени в обрез, буду рад конструктивной критике 8) ):
+<p>1) Есть недоработанные моменты по рекомендациям. Оставил POSTRESQL, думал перейду на HSQL без проблем, 
+бился целый день, но триггер у меня так и не стал, если будет время в ближайшее время, сделаю.</p>
+<p>2) Не предусмотрел возможность Shutdown server'a, при переходе таймера в 11ч и 00.00.</p>
+<p>3) Не нравится история голосований, упростил как вариант связи Меню-Ресторан-Еда, необходим Pagination.</p>
+<p>4) Не уверен по правильности REST.</p>

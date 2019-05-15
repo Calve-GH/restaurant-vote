@@ -53,6 +53,14 @@ class VoteRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void voteByWrongRestaurantIdFail() throws Exception {
+        mockMvc.perform(put(REST_URL + "vote/123")
+                .with(userHttpBasic(TEST_USER)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
     void unlockVoteSuccess() throws Exception {
         mockMvc.perform(delete(REST_URL + "vote/")
                 .with(userHttpBasic(TEST_ADMIN_1)))

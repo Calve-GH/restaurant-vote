@@ -35,7 +35,6 @@ public class DataJpaSystemRepositoryImpl implements SystemRepository {
     @Override
     public void resetAndLogVoteSystem() {
         List<Menu> dailyVoteList = menuRepo.findAllByDate(LocalDate.now());
-        System.out.println(dailyVoteList);
         historyRepo.saveAll(JpaUtil.convertMenuListToHistoryList(dailyVoteList));
 
         menuItemRepo.deleteAll();

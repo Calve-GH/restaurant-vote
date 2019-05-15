@@ -33,8 +33,8 @@ VALUES (100008, 100003, 5),
 
 INSERT INTO users (name, email, password, restaurant_id)
 VALUES ('Ivanov', 'ivanov@gmail.com', '{noop}1234567', 100000),
-       ('Bibiziana', 'makaka@gmail.com', '{noop}9876543', null),
-       ('Padlov', 'papadlov@mail.ru', '{noop}12351514', null),
+       ('Petrov', 'petrov@gmail.com', '{noop}9876543', null),
+       ('Sidorov', 'sidirov@mail.ru', '{noop}12351514', null),
        ('Davidov', 'davidov009@gmail.com', '{noop}1234567', 100002);
 
 INSERT INTO user_roles (role, user_id)

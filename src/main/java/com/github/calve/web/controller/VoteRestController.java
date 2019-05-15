@@ -56,7 +56,7 @@ public class VoteRestController {
     void vote(@PathVariable Integer id) {
         User user = userRepo.getOne(SecurityUtil.authUserId());
         ValidationUtil.checkNotFound(user, "current user id");
-        Restaurant restaurant = restaurantRepo.getOne(id);
+        Restaurant restaurant = restaurantRepo.findById(id).orElse(null);
         ValidationUtil.checkNotFound(restaurant, "current restaurant id");
         VoteLog voteLog = new VoteLog(user, restaurant);
         voteLogRepo.save(voteLog);

@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class VoteTestData {
 
     public static final User TEST_USER =
-            new User(START_SEQ + 15, "Bibiziana", "makaka@gmail.com", "9876543", null, true, Collections.singletonList(Role.ROLE_USER));
+            new User(START_SEQ + 15, "Petrov", "petrov@gmail.com", "9876543", null, true, Collections.singletonList(Role.ROLE_USER));
 
     public static final Restaurant RESTAURANT_1 = new Restaurant(START_SEQ, "Sweet bobaleh");
     public static final Restaurant RESTAURANT_2 = new Restaurant(START_SEQ + 1, "ITAKA");
@@ -23,7 +23,7 @@ public class VoteTestData {
             new User(START_SEQ + 14, "Ivanov", "ivanov@gmail.com", "1234567", RESTAURANT_1, true, Collections.singletonList(Role.ROLE_ADMIN));
 
     public static final User TEST_ADMIN_2 =
-            new User(START_SEQ + 17, "Davidov", "davidov@gmail.com", "1234567", RESTAURANT_3, true, Collections.singletonList(Role.ROLE_ADMIN));
+            new User(START_SEQ + 17, "Davidov", "davidov009@gmail.com", "1234567", RESTAURANT_3, true, Collections.singletonList(Role.ROLE_ADMIN));
 
     public static final DishTo DISH_TO_1 = new DishTo(START_SEQ + 3, "Soup", 15.0);
     public static final DishTo DISH_TO_2 = new DishTo(START_SEQ + 4, "French fries", 10.0);
