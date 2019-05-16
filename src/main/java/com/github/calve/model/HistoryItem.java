@@ -89,6 +89,7 @@ public class HistoryItem extends AbstractBaseEntity {
                 ", restaurant=" + restaurant +
                 ", data='" + data + '\'' +
                 ", count=" + count +
+                ", id=" + id +
                 '}';
     }
 }

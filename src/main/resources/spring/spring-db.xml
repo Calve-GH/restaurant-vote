@@ -2,19 +2,33 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:jee="http://www.springframework.org/schema/jee"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd   http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+       http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+
+<!--    https://stackoverflow.com/questions/9157027/hsql-create-procedure-syntax-doesnt-seem-to-match-the-documentation-->
+    <jdbc:initialize-database data-source="dataSource" enabled="${database.init}" ignore-failures="DROPS">
+        <jdbc:script location="classpath:db/initDB_hsql.sql" separator=";"/>
+        <jdbc:script location="classpath:db/trigger.sql" separator="/;"/>
+        <jdbc:script encoding="utf-8" location="classpath:db/populateDB.sql"/>
+    </jdbc:initialize-database>
 
     <tx:annotation-driven/>
 
-    <context:property-placeholder location="classpath:db/postgres.properties, classpath:restaurant-vote.properties"
+    <context:property-placeholder location="classpath:db/hsqldb.properties, classpath:restaurant-vote.properties"
                                   system-properties-mode="OVERRIDE"/>
     <beans>
         <bean id="dataSource"
               class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-              p:driverClassName="org.postgresql.Driver"
+              p:driverClassName="org.hsqldb.jdbcDriver"
               p:url="${database.url}"
               p:username="${database.username}"
               p:password="${database.password}"/>

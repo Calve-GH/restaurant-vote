@@ -31,8 +31,7 @@ public class VoteTestData {
     public static final DishTo DISH_TO_4 = new DishTo("Chicken Soup", 22.1);
 
     public static final Menu MENU_1 = new Menu(START_SEQ + 8, LocalDate.now(), RESTAURANT_1, 11);
-    public static final Menu MENU_2 = new Menu(START_SEQ + 21, LocalDate.now(), RESTAURANT_2, 1);
-    public static final Menu MENU_3 = new Menu(START_SEQ + 25, LocalDate.now(), RESTAURANT_1, 0);
+    public static final Menu MENU_3 = new Menu(START_SEQ + 22, LocalDate.now(), RESTAURANT_1, 0);
     public static final Menu MENU_3_NEW = new Menu(null, LocalDate.now(), RESTAURANT_1, 0);
 
     public static final Dish DISH_1 = new Dish(START_SEQ + 3, "Soup");
@@ -47,21 +46,21 @@ public class VoteTestData {
     public static final MenuItem MENU_ITEM_3 = new MenuItem(START_SEQ + 11, MENU_1, DISH_3, 15.0);
     public static final MenuItem MENU_ITEM_4 = new MenuItem(START_SEQ + 12, MENU_1, DISH_4, 2.0);
     public static final MenuItem MENU_ITEM_5 = new MenuItem(START_SEQ + 13, MENU_1, DISH_5, 3.0);
-    public static final MenuItem MENU_ITEM_6 = new MenuItem(START_SEQ + 27, MENU_1, DISH_6, 22.1);
-    public static final MenuItem MENU_ITEM_7 = new MenuItem(START_SEQ + 28, MENU_1, DISH_5, 5.0);
-    public static final MenuItem MENU_ITEM_8 = new MenuItem(START_SEQ + 29, MENU_1, DISH_1, 15.0);
-    public static final MenuItem MENU_ITEM_9 = new MenuItem(START_SEQ + 30, MENU_1, DISH_3, 10.0);
+    public static final MenuItem MENU_ITEM_6 = new MenuItem(START_SEQ + 26, MENU_1, DISH_6, 22.1);
+    public static final MenuItem MENU_ITEM_7 = new MenuItem(START_SEQ + 24, MENU_1, DISH_5, 5.0);
+    public static final MenuItem MENU_ITEM_8 = new MenuItem(START_SEQ + 25, MENU_1, DISH_1, 15.0);
+    public static final MenuItem MENU_ITEM_9 = new MenuItem(START_SEQ + 27, MENU_1, DISH_3, 10.0);
 
     public static final List<Dish> DISH_LIST = Arrays.asList(DISH_1, DISH_2, DISH_3, DISH_4, DISH_5);
-    public static final List<Menu> DAILY_MENU_LIST = Arrays.asList(MENU_1, MENU_2);
+    public static final List<Menu> DAILY_MENU_LIST = Arrays.asList(MENU_1);
 
-    public static final VoteLog VOTE_LOG_1 = new VoteLog(TEST_USER, RESTAURANT_1);
+    public static final VoteLog VOTE_LOG_1 = new VoteLog(TEST_USER, RESTAURANT_1);//START_SEQ + 18
 
-    public static final HistoryItem HISTORY_ITEM_1 = new HistoryItem(START_SEQ + 22, LocalDate.now().minusDays(1),
+    public static final HistoryItem HISTORY_ITEM_1 = new HistoryItem(START_SEQ + 19, LocalDate.now().minusDays(1),
             RESTAURANT_1, "Soup:10.5 French fries:10.0 Coffee:5.3", 112);
-    public static final HistoryItem HISTORY_ITEM_2 = new HistoryItem(START_SEQ + 23, LocalDate.now().minusDays(2),
+    public static final HistoryItem HISTORY_ITEM_2 = new HistoryItem(START_SEQ + 20, LocalDate.now().minusDays(2),
             RESTAURANT_1, "Hamburger:13.12 Tea:3.0", 79);
-    public static final HistoryItem HISTORY_ITEM_3 = new HistoryItem(START_SEQ + 24, LocalDate.now().minusDays(1),
+    public static final HistoryItem HISTORY_ITEM_3 = new HistoryItem(START_SEQ + 21, LocalDate.now().minusDays(1),
             RESTAURANT_2, "Soup:7.0 Hamburger:11.0 Tea:3.4 Coffee:4.3", 179);
 
     public static final List<HistoryItem> HISTORY_ITEM_LIST = Arrays.asList(HISTORY_ITEM_1, HISTORY_ITEM_2, HISTORY_ITEM_3);
