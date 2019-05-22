@@ -58,8 +58,10 @@ public class VoteRestController {
         ValidationUtil.checkNotFound(user, "current user id");
         Restaurant restaurant = restaurantRepo.findById(id).orElse(null);
         ValidationUtil.checkNotFound(restaurant, "current restaurant id");
-        VoteLog voteLog = new VoteLog(user, restaurant);
-        voteLogRepo.save(voteLog);
+        if (restaurant.getMenuExist()) {
+            VoteLog voteLog = new VoteLog(user, restaurant);
+            voteLogRepo.save(voteLog);
+        }
     }
 
     @DeleteMapping("/vote")

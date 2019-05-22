@@ -9,10 +9,10 @@ DELETE FROM history;
 
 ALTER SEQUENCE global_seq RESTART WITH 100000;
 
-INSERT INTO restaurant (name)
-VALUES ('Sweet bobaleh'),
-       ('ITAKA'),
-       ('Hunter Village');
+INSERT INTO restaurant (name, menu_exist)
+VALUES ('Sweet bobaleh', false),
+       ('ITAKA', false),
+       ('Hunter Village', false);
 
 INSERT INTO dish (name)
 VALUES ('Soup'),

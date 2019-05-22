@@ -25,3 +25,13 @@ BEGIN
     WHEN MATCHED THEN
         UPDATE SET m.vote_count=m.vote_count - 1;
 end /;
+
+CREATE TRIGGER set_restaurant_daily_menu_exist
+    AFTER INSERT
+    ON menu
+    REFERENCING NEW ROW AS newrow
+    FOR EACH ROW
+BEGIN
+    ATOMIC
+    UPDATE restaurant r SET r.menu_exist=true WHERE r.id = newrow.restaurant_id;
+end /;

@@ -75,13 +75,13 @@ class VoteRepoImplTest {
 
     @Test
     void getVoteList() {
-/*        List<Menu> voteList = menuRepo.findAllByDate(LocalDate.now());
+        List<Menu> voteList = menuRepo.findAllByDate(LocalDate.now());
         addMenuItemsToTestMenu(MENU_1, MENU_ITEM_1, MENU_ITEM_2, MENU_ITEM_3, MENU_ITEM_4, MENU_ITEM_5);
-        assertMatch(voteList, MENU_1, MENU_2);
+        assertMatch(voteList, Arrays.asList(MENU_1));
         assertMatch(voteList.stream().map(Menu::getRestaurant)
-                .collect(Collectors.toList()), Arrays.asList(MENU_1.getRestaurant(), MENU_2.getRestaurant()));
+                .collect(Collectors.toList()), Arrays.asList(MENU_1.getRestaurant()));
         assertMatch(voteList.stream().map(Menu::getItems)
-                .collect(Collectors.toList()), Arrays.asList(MENU_1.getItems(), MENU_2.getItems()));*/
+                .collect(Collectors.toList()), Arrays.asList(MENU_1.getItems()));
     }
 
     @Test
@@ -103,7 +103,7 @@ class VoteRepoImplTest {
         voteLogRepo.save(voteLog);
         List<String> list = voteLogRepo.findAll().stream().map(VoteLog::toString).collect(Collectors.toList());
         System.out.println(list);
-        System.out.println(VOTE_LOG_1.toString());
+        System.out.println(VOTE_LOG_1.toString()); //t f to string exception
         assertTrue(list.contains(VOTE_LOG_1.toString())); //WRONG LDT FORMAT Сравнение по строкам
         // убрал из User.toString дату ибо из БД тянется с наносеками а там различия, пароль тоже убрал
         assertEquals(menuRepo.getMenuByDateAndRestaurantId(LocalDate.now(), RESTAURANT_1.getId()).getVoteCount(), 12);
@@ -145,4 +145,6 @@ class VoteRepoImplTest {
         }
         return items;
     }
+
+
 }

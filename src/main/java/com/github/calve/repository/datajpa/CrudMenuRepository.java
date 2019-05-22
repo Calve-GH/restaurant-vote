@@ -21,7 +21,7 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
     void deleteById(Integer id);
 
 
-    @CacheEvict(value = "menus")
+    @CacheEvict(value = {"menus", "restaurants"})
     @Override
     @Transactional
     Menu save(Menu item);
