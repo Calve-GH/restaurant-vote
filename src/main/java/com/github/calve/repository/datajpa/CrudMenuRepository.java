@@ -54,7 +54,6 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
     @Query("SELECT m FROM Menu m WHERE m.restaurant.id=?1")
     Menu getWithMI(Integer id);
 
-    //TODO TEST
     @Transactional
     @EntityGraph(attributePaths = {"restaurant", "items"}, type = EntityGraph.EntityGraphType.LOAD)
     List<Menu> findByDateBefore(LocalDate date);

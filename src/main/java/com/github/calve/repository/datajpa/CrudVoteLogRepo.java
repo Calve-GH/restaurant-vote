@@ -31,7 +31,6 @@ public interface CrudVoteLogRepo extends JpaRepository<VoteLog, Integer> {
     @Override
     void deleteAll();
 
-    //TODO TEST
     @Transactional
     void deleteAllByDateBefore(LocalDate date);
 }

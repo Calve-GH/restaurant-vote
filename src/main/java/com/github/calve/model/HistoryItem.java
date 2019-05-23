@@ -25,7 +25,7 @@ public class HistoryItem extends AbstractBaseEntity {
     private Restaurant restaurant;
 
     @Column(name = "data", nullable = false)
-    @NotBlank//TODO
+    @NotBlank
     private String data;
 
     @Column(name = "vote_count", nullable = false, columnDefinition = "Integer default 0")

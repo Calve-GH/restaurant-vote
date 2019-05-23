@@ -138,7 +138,6 @@ public class VoteRestController {
         CHANGE_VOTING_ENABLE = true;
     }
 
-    //TODO time to props
     @PostConstruct
     private void initMethod() {
         LocalTime currentServerTime = LocalTime.now();

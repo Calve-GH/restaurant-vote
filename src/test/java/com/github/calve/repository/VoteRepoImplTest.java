@@ -142,15 +142,4 @@ class VoteRepoImplTest {
         }
         return items;
     }
-
-    //TODO TEST
-    @Test
-    void testSaveOverpassMenus() {
-        List<Menu> unsavedMenus = menuRepo.findByDateBefore(LocalDate.now());
-        historyRepo.saveAll(JpaUtil.convertMenuListToHistoryList(unsavedMenus));
-        menuRepo.deleteAll(unsavedMenus);
-        voteLogRepo.deleteAllByDateBefore(LocalDate.now());
-        System.out.println("----------------------------------------------------");
-    }
-
 }
