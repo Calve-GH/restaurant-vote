@@ -62,10 +62,10 @@ public class VoteRestController {
         this.systemRepository = systemRepository;
     }
 
-    @PutMapping("/vote/{id}")
+    @PutMapping("/vote")//@RequestParam
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @Transactional
-    void vote(@PathVariable Integer id) {
+    void vote(@RequestParam Integer id) { //@PathVariable
         User user = userRepo.getOne(SecurityUtil.authUserId());
         ValidationUtil.checkNotFound(user, "current user id");
         Restaurant restaurant = restaurantRepo.findById(id).orElse(null);

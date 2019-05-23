@@ -43,7 +43,7 @@ class VoteRestControllerTest extends AbstractControllerTest {
 
     @Test
     void voteUserSuccess() throws Exception {
-        mockMvc.perform(put(REST_URL + "vote/" + RESTAURANT_1.getId())
+        mockMvc.perform(put(REST_URL + "vote?id=" + RESTAURANT_1.getId())
                 .with(userHttpBasic(TEST_USER)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
@@ -54,7 +54,7 @@ class VoteRestControllerTest extends AbstractControllerTest {
 
     @Test
     void voteByWrongRestaurantIdFail() throws Exception {
-        mockMvc.perform(put(REST_URL + "vote/123")
+        mockMvc.perform(put(REST_URL + "vote?id=123")
                 .with(userHttpBasic(TEST_USER)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());

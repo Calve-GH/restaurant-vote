@@ -153,12 +153,16 @@
             <td><strong>Code:</strong> 204
         </tr>
         <tr>
+            <td><strong>URL Parameters</strong></td>
+            <td><strong>Required:</strong> id=[integer]
+        </tr>
+        <tr>
             <td><strong>Error Response</strong></td>
             <td><strong>Code:</strong> 401 UNAUTHORIZED
         </tr>
         <tr>
             <td><strong>Sample Request</strong></td>
-            <td><code>/rest/profile/vote/100000</code></td>
+            <td><code>/rest/profile/vote?id=100000</code></td>
         </tr>
         <tr>
             <td><strong>Notes</strong></td>
@@ -344,6 +348,6 @@ curl -H "Content-Type: application/json;charset=UTF-8" -X POST -d '{"name":"newN
 <p>16.05.2019 - Убрал POSTRESQL перевел на HSQLDB, ссылка на пробему с тригерами в spring-db.xml</p>
 <p>22.05.2019 - Предусмотрена возможность Shutdown server'a, если в таблицах остануться данные о голосовании в другие дни
 то они будут перенесены в историю, сразу после поднятия контекста.
-Значение константы CHANGE_VOTING_ENABLE, определяется в контроллере @PosrConstruct.
+Значение константы CHANGE_VOTING_ENABLE, определяется в контроллере @PostConstruct.
 Задизейблил тест на смену голосования, т.к. он зависит от текушего времени сервера.(можно исправить в restaurant-vote.properties)
 </p>
