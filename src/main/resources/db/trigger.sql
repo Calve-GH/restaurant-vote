@@ -33,5 +33,5 @@ CREATE TRIGGER set_restaurant_daily_menu_exist
     FOR EACH ROW
 BEGIN
     ATOMIC
-    UPDATE restaurant r SET r.menu_exist=true WHERE r.id = newrow.restaurant_id;
+    UPDATE restaurant r SET r.menu_exist= true WHERE r.id = newrow.restaurant_id;
 end /;

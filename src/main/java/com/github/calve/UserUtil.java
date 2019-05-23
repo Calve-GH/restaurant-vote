@@ -1,10 +1,10 @@
 package com.github.calve;
 
+import com.github.calve.model.Role;
 import com.github.calve.model.User;
 import com.github.calve.to.UserTo;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
-import com.github.calve.model.Role;
 
 public class UserUtil {
 

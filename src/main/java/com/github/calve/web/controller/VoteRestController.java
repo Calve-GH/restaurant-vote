@@ -10,6 +10,7 @@ import com.github.calve.util.ValidationUtil;
 import com.github.calve.util.exception.IllegalRequestDataException;
 import com.github.calve.web.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,9 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -34,21 +35,32 @@ public class VoteRestController {
     public static final String REST_URL = "/rest/profile";
 
     private static Boolean CHANGE_VOTING_ENABLE = true;
+    @Value("${system.vote.change.disable.start}")
+    private String voteDisableStart;
+    @Value("${system.vote.change.disable.end}")
+    private String getVoteDisableEnd;
+
+    private CrudMenuRepository menuRepo;
+    private CrudVoteLogRepo voteLogRepo;
+    private CrudHistoryRepo historyRepo;
+    private CrudUserRepository userRepo;
+    private CrudRestaurantRepo restaurantRepo;
+    private UserService userService;
+    private SystemRepository systemRepository;
 
     @Autowired
-    private CrudMenuRepository menuRepo;
-    @Autowired
-    private CrudVoteLogRepo voteLogRepo;
-    @Autowired
-    private CrudHistoryRepo historyRepo;
-    @Autowired
-    private CrudUserRepository userRepo;
-    @Autowired
-    private CrudRestaurantRepo restaurantRepo;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private SystemRepository systemRepository;
+    public VoteRestController(CrudMenuRepository menuRepo, CrudVoteLogRepo voteLogRepo,
+                              CrudHistoryRepo historyRepo, CrudUserRepository userRepo,
+                              CrudRestaurantRepo restaurantRepo, UserService userService,
+                              SystemRepository systemRepository) {
+        this.menuRepo = menuRepo;
+        this.voteLogRepo = voteLogRepo;
+        this.historyRepo = historyRepo;
+        this.userRepo = userRepo;
+        this.restaurantRepo = restaurantRepo;
+        this.userService = userService;
+        this.systemRepository = systemRepository;
+    }
 
     @PutMapping("/vote/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -124,5 +136,16 @@ public class VoteRestController {
     private void systemRestart() {
         systemRepository.resetAndLogVoteSystem();
         CHANGE_VOTING_ENABLE = true;
+    }
+
+    //TODO time to props
+    @PostConstruct
+    private void initMethod() {
+        LocalTime currentServerTime = LocalTime.now();
+        if (currentServerTime.isAfter(LocalTime.parse(voteDisableStart)) && currentServerTime.isBefore(
+                LocalTime.parse(getVoteDisableEnd)
+        )) {
+            CHANGE_VOTING_ENABLE = false;
+        }
     }
 }

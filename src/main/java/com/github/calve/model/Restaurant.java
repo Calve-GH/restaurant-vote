@@ -15,7 +15,7 @@ public class Restaurant extends AbstractNamedEntity {
     @Column(name = "menu_exist", nullable = false, columnDefinition = "bool default false")
     private Boolean menu_exist = false;
 
-    public Restaurant(Integer id, String name , Boolean menu_exist) {
+    public Restaurant(Integer id, String name, Boolean menu_exist) {
         super(id, name);
         this.menu_exist = menu_exist;
     }

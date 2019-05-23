@@ -1,14 +1,12 @@
 package com.github.calve.web.controller;
 
-import com.github.calve.model.Restaurant;
 import com.github.calve.repository.SystemRepository;
 import com.github.calve.repository.datajpa.CrudHistoryRepo;
+import com.github.calve.repository.datajpa.CrudMenuRepository;
 import com.github.calve.repository.datajpa.CrudRestaurantRepo;
 import com.github.calve.repository.datajpa.CrudVoteLogRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,6 +23,8 @@ public class SystemControllerTest extends AbstractControllerTest {
     private CrudHistoryRepo historyRepo;
     @Autowired
     private CrudRestaurantRepo restaurantRepo;
+    @Autowired
+    private CrudMenuRepository menuRepository;
 
     @Test
     void testResetAndLogSystem() {
@@ -40,4 +40,5 @@ public class SystemControllerTest extends AbstractControllerTest {
         restaurantRepo.clearRestaurantStates();
         restaurantRepo.findAll().forEach(r -> assertFalse(r.getMenuExist()));
     }
+
 }

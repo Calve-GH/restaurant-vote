@@ -4,12 +4,9 @@ import com.github.calve.model.*;
 import com.github.calve.repository.datajpa.*;
 import com.github.calve.to.DishTo;
 import com.sun.istack.NotNull;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
@@ -56,7 +53,7 @@ class VoteRepoImplTest {
 
     @Test
     void getDailyMenu() {
-        Menu dailyMenu =  menuRepo.getMenuByDateAndRestaurantId(LocalDate.now(), RESTAURANT_1.getId());
+        Menu dailyMenu = menuRepo.getMenuByDateAndRestaurantId(LocalDate.now(), RESTAURANT_1.getId());
         addMenuItemsToTestMenu(MENU_1, MENU_ITEM_1, MENU_ITEM_2, MENU_ITEM_3, MENU_ITEM_4, MENU_ITEM_5);
         assertMatch(dailyMenu, MENU_1);
         assertMatch(dailyMenu.getRestaurant(), MENU_1.getRestaurant());
@@ -146,5 +143,14 @@ class VoteRepoImplTest {
         return items;
     }
 
+    //TODO TEST
+    @Test
+    void testSaveOverpassMenus() {
+        List<Menu> unsavedMenus = menuRepo.findByDateBefore(LocalDate.now());
+        historyRepo.saveAll(JpaUtil.convertMenuListToHistoryList(unsavedMenus));
+        menuRepo.deleteAll(unsavedMenus);
+        voteLogRepo.deleteAllByDateBefore(LocalDate.now());
+        System.out.println("----------------------------------------------------");
+    }
 
 }

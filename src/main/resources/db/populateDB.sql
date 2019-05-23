@@ -1,11 +1,19 @@
-DELETE FROM menu_item;
-DELETE FROM menu;
-DELETE FROM dish;
-DELETE FROM restaurant;
-DELETE FROM user_roles;
-DELETE FROM users;
-DELETE FROM vote_log;
-DELETE FROM history;
+DELETE
+FROM menu_item;
+DELETE
+FROM menu;
+DELETE
+FROM dish;
+DELETE
+FROM restaurant;
+DELETE
+FROM user_roles;
+DELETE
+FROM users;
+DELETE
+FROM vote_log;
+DELETE
+FROM history;
 
 ALTER SEQUENCE global_seq RESTART WITH 100000;
 
@@ -47,6 +55,6 @@ INSERT INTO vote_log(user_id, restaurant_id, date)
 VALUES (100014, 100000, now());
 
 INSERT INTO history(date, restaurant_id, data, vote_count)
-VALUES (now() - INTERVAL '1' day , 100000, 'Soup:10.5 French fries:10.0 Coffee:5.3', 112),
+VALUES (now() - INTERVAL '1' day, 100000, 'Soup:10.5 French fries:10.0 Coffee:5.3', 112),
        (now() - INTERVAL '2' day, 100000, 'Hamburger:13.12 Tea:3.0', 79),
        (now() - INTERVAL '1' day, 100001, 'Soup:7.0 Hamburger:11.0 Tea:3.4 Coffee:4.3', 179);

@@ -9,6 +9,8 @@ import com.github.calve.repository.datajpa.CrudMenuRepository;
 import com.github.calve.repository.datajpa.CrudVoteLogRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,6 +54,14 @@ public class DataJpaSystemRepositoryImpl implements SystemRepository {
     @Override
     public List<VoteLog> getVoteLogs() {
         return voteLogRepo.findAll();
+    }
+
+    @EventListener
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        List<Menu> unsavedMenus = menuRepo.findByDateBefore(LocalDate.now());
+        historyRepo.saveAll(JpaUtil.convertMenuListToHistoryList(unsavedMenus));
+        menuRepo.deleteAll(unsavedMenus);
+        voteLogRepo.deleteAllByDateBefore(LocalDate.now());
     }
 
     private void clearCache() {

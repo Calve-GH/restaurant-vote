@@ -36,9 +36,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return repository.save(prepareToSave(user, passwordEncoder));
         } catch (Exception e) {
             e.printStackTrace();
-/*            Throwable t = getCause(e);
-            if (t.getMessage().contains(UNIQUE_EMAIL_IDX))
-                throw new Exception(UNIQUE_EMAIL_IDX_MSG);*/
         }
         return null;
     }
@@ -59,6 +56,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<User> getAll() {
         return repository.findAll();
     }
+
     @Override
     public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = repository.getByEmail(email.toLowerCase());

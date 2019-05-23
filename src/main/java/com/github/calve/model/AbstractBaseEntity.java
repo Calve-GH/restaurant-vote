@@ -29,13 +29,13 @@ public abstract class AbstractBaseEntity implements HasId {
     }
 
     @Override
-    public void setId(Integer id) {
-        this.id = id;
+    public Integer getId() {
+        return id;
     }
 
     @Override
-    public Integer getId() {
-        return id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override

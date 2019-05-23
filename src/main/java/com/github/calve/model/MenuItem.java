@@ -1,6 +1,5 @@
 package com.github.calve.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -15,7 +14,7 @@ public class MenuItem extends AbstractBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnoreProperties(value = "items", allowSetters=true)
+    @JsonIgnoreProperties(value = "items", allowSetters = true)
     private Menu menu;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -33,6 +32,7 @@ public class MenuItem extends AbstractBaseEntity {
         this.dish = dish;
         this.price = price;
     }
+
     public MenuItem(Dish dish, @NotNull Double price) {
         this.dish = dish;
         this.price = price;
@@ -77,7 +77,7 @@ public class MenuItem extends AbstractBaseEntity {
 
     @Override
     public String toString() {
-        return "MenuItem{" +"id=" + id +
+        return "MenuItem{" + "id=" + id +
                 ", dish=" + dish.getName() +
                 ", price=" + price +
                 '}';

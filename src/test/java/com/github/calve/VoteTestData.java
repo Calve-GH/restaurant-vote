@@ -67,6 +67,7 @@ public class VoteTestData {
 
     public static Set<DishTo> dishes = new HashSet<>(Arrays.asList(DISH_TO_1, DISH_TO_2, DISH_TO_3, DISH_TO_4));
 
+
     public static <T> void assertMatch(T actual, T expected) {
         assertThat(actual).isEqualTo(expected);
     }

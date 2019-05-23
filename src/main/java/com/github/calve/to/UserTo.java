@@ -36,6 +36,7 @@ public class UserTo extends BaseTo implements Serializable {
         this.password = password;
         this.restaurant = restaurant;
     }
+
     public UserTo(Integer id, String name, String email, String password, String restaurant) {
         super(id);
         this.name = name;
