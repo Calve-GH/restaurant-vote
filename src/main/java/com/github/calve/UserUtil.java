@@ -10,11 +10,11 @@ public class UserUtil {
 
     public static User createNewFromTo(UserTo newUser) {
         return new User(null, newUser.getName(), newUser.getEmail().toLowerCase(), newUser.getPassword(),
-                newUser.getRestaurant(), newUser.getRestaurant() != null ? Role.ROLE_ADMIN : Role.ROLE_USER);
+                Role.ROLE_USER);
     }
 
     public static UserTo asTo(User user) {
-        return new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRestaurant());
+        return new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword());
     }
 
     public static User updateFromTo(User user, UserTo userTo) {

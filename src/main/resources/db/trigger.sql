@@ -6,8 +6,8 @@ CREATE TRIGGER increment_voting
 BEGIN
     ATOMIC
     MERGE INTO menu AS m
-    USING (VALUES (now(), newrow.restaurant_id, 1)) AS vals(a, b, c)
-    ON m.restaurant_id = vals.b
+    USING (VALUES (newrow.date, newrow.restaurant_id, 0)) AS vals(a, b, c)
+    ON (m.date = vals.a AND m.restaurant_id = vals.b)
     WHEN MATCHED THEN
         UPDATE SET m.vote_count=m.vote_count + 1;
 end /;
@@ -20,8 +20,8 @@ CREATE TRIGGER decrement_voting
 BEGIN
     ATOMIC
     MERGE INTO menu AS m
-    USING (VALUES (now(), oldrow.restaurant_id, 1)) AS vals(a, b, c)
-    ON m.restaurant_id = vals.b
+    USING (VALUES (oldrow.date, oldrow.restaurant_id, 0)) AS vals(a, b, c)
+    ON (m.date = vals.a AND m.restaurant_id = vals.b)
     WHEN MATCHED THEN
         UPDATE SET m.vote_count=m.vote_count - 1;
 end /;
@@ -35,3 +35,14 @@ BEGIN
     ATOMIC
     UPDATE restaurant r SET r.menu_exist= true WHERE r.id = newrow.restaurant_id;
 end /;
+
+CREATE TRIGGER set_restaurant_daily_menu_no_exist
+    AFTER DELETE
+    ON menu
+    REFERENCING OLD ROW AS oldrow
+    FOR EACH ROW
+BEGIN
+    ATOMIC
+    UPDATE restaurant r SET r.menu_exist= false WHERE r.id = oldrow.restaurant_id;
+end /;
+

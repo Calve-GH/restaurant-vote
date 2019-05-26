@@ -2,38 +2,35 @@ package com.github.calve.web.controller;
 
 import com.github.calve.model.Dish;
 import com.github.calve.model.Menu;
-import com.github.calve.model.MenuItem;
-import com.github.calve.model.User;
+import com.github.calve.model.Restaurant;
 import com.github.calve.repository.datajpa.CrudDishRepository;
 import com.github.calve.repository.datajpa.CrudMenuRepository;
-import com.github.calve.repository.datajpa.CrudUserRepository;
-import com.github.calve.to.DishTo;
-import com.github.calve.util.ValidationUtil;
-import com.github.calve.util.exception.IllegalRequestDataException;
-import com.github.calve.web.SecurityUtil;
-import com.sun.istack.NotNull;
+import com.github.calve.repository.datajpa.CrudRestaurantRepo;
+import com.github.calve.to.MenuTo;
+import com.github.calve.util.exception.StoreEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
+import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+
+import static com.github.calve.repository.MenuUtil.createFromTo;
+import static com.github.calve.repository.MenuUtil.createNewFromTo;
+import static com.github.calve.util.ExceptionUtil.*;
+import static com.github.calve.util.ValidationUtil.*;
 
 @RestController
 @RequestMapping(value = MenuRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @PropertySource("classpath:restaurant-vote.properties")
 public class MenuRestController {
 
-    public static final String REST_URL = "/rest/admin/menu";
+    public static final String REST_URL = "/rest/admin";
     @Value("${dish.list.min.size}")
     private Integer minDishes;
     @Value("${dish.list.max.size}")
@@ -44,27 +41,22 @@ public class MenuRestController {
     @Autowired
     private CrudDishRepository dishRepo;
     @Autowired
-    private CrudUserRepository userRepo;
+    private CrudRestaurantRepo restaurantRepo;
 
-    @GetMapping
+/*    @GetMapping
     Menu getDailyMenu() {
-        return menuRepo.getWithMI(SecurityUtil.get().getUserTo().getRestaurant().getId());
-    }
+        return menuRepo.getWithMenuItems(SecurityUtil.get().getUserTo().getRestaurant().getId());
+    }*/
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+/*    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Menu> saveDailyMenu(@RequestBody List<DishTo> items) {
         Set<DishTo> itemsSet = new HashSet<>(items);
         Menu createdMenu = saveDailyMenu(itemsSet, SecurityUtil.authUserId());
         URI newMenuUri = ServletUriComponentsBuilder.fromCurrentContextPath().path(REST_URL).buildAndExpand().toUri();
         return ResponseEntity.created(newMenuUri).body(createdMenu);
-    }
+    }*/
 
-    @GetMapping("/dishes")
-    public List<Dish> getDishes() {
-        return dishRepo.findAll();
-    }
-
-    @Transactional
+/*    @Transactional
     public Menu saveDailyMenu(Set<DishTo> dishes, Integer adminId) {
         if (dishes.size() >= minDishes && dishes.size() <= maxDishes) {
             User admin = userRepo.findById(adminId).orElse(null);
@@ -78,9 +70,9 @@ public class MenuRestController {
             return menu;
         }
         throw new IllegalRequestDataException(getOutOfRangeString(minDishes, maxDishes));
-    }
+    }*/
 
-    private String getOutOfRangeString(Integer minDishes, Integer maxDishes) {
+/*    private String getOutOfRangeString(Integer minDishes, Integer maxDishes) {
         StringBuilder sb = new StringBuilder("Number of menu dishes out of range [");
         sb.append(minDishes);
         sb.append(" - ");
@@ -102,5 +94,102 @@ public class MenuRestController {
             items.add(new MenuItem(menu, dishWithId, dishTo.getPrice()));
         }
         return items;
+    }*/
+
+    @GetMapping("/menu")
+    public List<Menu> getMenus(@RequestParam(required = false) LocalDate date,
+                               @RequestParam(required = false) Integer restaurantId) {
+
+        if (date == null && restaurantId == null) {
+            return menuRepo.findAll();
+        }
+        if (date == null) {
+            return menuRepo.findAllByRestaurantId(restaurantId);
+        }
+        if (restaurantId == null) {
+            return menuRepo.findAllByDate(date);
+        }
+        return Collections.singletonList(menuRepo.findByDateAndRestaurantId(date, restaurantId));
     }
+
+    @PostMapping(value = "/menu", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public void saveMenu(@Valid @RequestBody MenuTo menuTo) {
+        Menu newMenu = createNewFromTo(menuTo);
+        checkNew(newMenu);
+        try {
+            menuRepo.save(newMenu);
+        } catch (Exception e) {
+            Throwable t = getCause(e);
+            if (t.getMessage().contains(MENU_UNIQUE_RESTAURANT_DATE_IDX))
+                throw new StoreEntityException(MENU_UNIQUE_RESTAURANT_DATE_IDX_MSG);
+        }
+    }
+
+    @PutMapping(value = "/menu/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updateMenu(@Valid @RequestBody MenuTo menuTo, @PathVariable int id) {
+        assureIdConsistent(menuTo, id);
+        try {
+            menuRepo.save(createFromTo(menuTo));
+        } catch (Exception e) {
+            Throwable t = getCause(e);
+            if (t.getMessage().contains(MENU_UNIQUE_RESTAURANT_DATE_IDX))
+                throw new StoreEntityException(MENU_UNIQUE_RESTAURANT_DATE_IDX_MSG);
+        }
+    }
+
+    @DeleteMapping("/menu/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteMenu(@PathVariable Integer id) {
+        checkNotFoundWithId(menuRepo.delete(id) != 0, id);
+    }
+
+    @GetMapping("/dish")
+    public List<Dish> getDishes() {
+        return dishRepo.findAll();
+    }
+
+    @PostMapping("/dish")
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public void saveDish(@RequestBody String dishName) {
+        try {
+            dishRepo.save(new Dish(dishName));
+        } catch (Exception e) {
+            Throwable t = getCause(e);
+            if (t.getMessage().contains(DISH_UNIQUE_NAME_IDX))
+                throw new StoreEntityException(DISH_UNIQUE_NAME_IDX_MSG);
+        }
+    }
+
+    @DeleteMapping("/dish/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteDish(@PathVariable Integer id) {
+        checkNotFoundWithId(dishRepo.delete(id) != 0, id);
+    }
+
+    @GetMapping("/restaurant")
+    public List<Restaurant> getRestaurants() {
+        return restaurantRepo.findAll();
+    }
+
+    @PostMapping("/restaurant")
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public void saveRestaurant(@RequestBody String restaurantName) {
+        try {
+            restaurantRepo.save(new Restaurant(restaurantName));
+        } catch (Exception e) {
+            Throwable t = getCause(e);
+            if (t.getMessage().contains(RESTAURANT_UNIQUE_NAME_IDX))
+                throw new StoreEntityException(RESTAURANT_UNIQUE_NAME_IDX_MSG);
+        }
+    }
+
+    @DeleteMapping("/restaurant/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteRestaurant(@PathVariable Integer id) {
+        checkNotFoundWithId(restaurantRepo.delete(id) != 0, id);
+    }
+
+
 }

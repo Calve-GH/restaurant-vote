@@ -44,7 +44,7 @@ class VoteRestControllerTest extends AbstractControllerTest {
     @Test
     void voteUserSuccess() throws Exception {
         mockMvc.perform(put(REST_URL + "vote?id=" + RESTAURANT_1.getId())
-                .with(userHttpBasic(TEST_USER)))
+                .with(userHttpBasic(TEST_USER_1)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
@@ -55,7 +55,7 @@ class VoteRestControllerTest extends AbstractControllerTest {
     @Test
     void voteByWrongRestaurantIdFail() throws Exception {
         mockMvc.perform(put(REST_URL + "vote?id=123")
-                .with(userHttpBasic(TEST_USER)))
+                .with(userHttpBasic(TEST_USER_1)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -70,14 +70,14 @@ class VoteRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        assertEquals(menuRepo.getWithMI(RESTAURANT_1.getId()).getVoteCount(), 10);
+        assertEquals(menuRepo.getWithMenuItems(RESTAURANT_1.getId()).getVoteCount(), 10);
 
     }
 
     @Test
     void getVoteListSuccess() throws Exception {
         mockMvc.perform(get(REST_URL)
-                .with(userHttpBasic(TEST_USER)))
+                .with(userHttpBasic(TEST_USER_1)))
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(result -> assertThat(readListFromJsonMvcResult(result, Menu.class)).isEqualTo(DAILY_MENU_LIST));
@@ -93,7 +93,7 @@ class VoteRestControllerTest extends AbstractControllerTest {
     @Test
     void getRestaurantsSuccess() throws Exception {
         mockMvc.perform(get(REST_URL + "vote/restaurants")
-                .with(userHttpBasic(TEST_USER)))
+                .with(userHttpBasic(TEST_USER_1)))
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(result -> assertThat(readListFromJsonMvcResult(result, Restaurant.class))
@@ -104,7 +104,7 @@ class VoteRestControllerTest extends AbstractControllerTest {
     void getVoteHistorySuccess() throws Exception {
         Collections.sort(HISTORY_ITEM_LIST, HISTORY_ITEM_COMPARATOR_DESC);
         mockMvc.perform(get(REST_URL + "vote/history")
-                .with(userHttpBasic(TEST_USER)))
+                .with(userHttpBasic(TEST_USER_1)))
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(result -> assertThat(readListFromJsonMvcResult(result, HistoryItem.class)).isEqualTo(HISTORY_ITEM_LIST));
@@ -115,7 +115,7 @@ class VoteRestControllerTest extends AbstractControllerTest {
         List<HistoryItem> listDesc = Arrays.asList(HISTORY_ITEM_1, HISTORY_ITEM_2);
         Collections.sort(listDesc, HISTORY_ITEM_COMPARATOR_DESC);
         mockMvc.perform(get(REST_URL + "vote/history/" + RESTAURANT_1.getId())
-                .with(userHttpBasic(TEST_USER)))
+                .with(userHttpBasic(TEST_USER_1)))
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(result -> assertThat(readListFromJsonMvcResult(result, HistoryItem.class)).isEqualTo(listDesc));
@@ -124,14 +124,14 @@ class VoteRestControllerTest extends AbstractControllerTest {
     @Test
     void testGetForbidden() throws Exception {
         mockMvc.perform(get(MenuRestController.REST_URL)
-                .with(userHttpBasic(TEST_USER)))
+                .with(userHttpBasic(TEST_USER_1)))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
 
     @Test
     void testRegisterSuccess() throws Exception {
-        UserTo createdTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword", "Mandondo");
+        UserTo createdTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
 
         ResultActions action = mockMvc.perform(post(REST_URL + "register").contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(createdTo)))

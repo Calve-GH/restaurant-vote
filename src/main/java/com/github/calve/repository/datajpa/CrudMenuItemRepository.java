@@ -14,7 +14,7 @@ public interface CrudMenuItemRepository extends JpaRepository<MenuItem, Integer>
     @Transactional
     void delete(MenuItem item);
 
-    List<MenuItem> findByMenuId(Integer id);
+    List<MenuItem> findByMenuIdOrderByIdAsc(Integer id);
 
     List<MenuItem> findAll();
 

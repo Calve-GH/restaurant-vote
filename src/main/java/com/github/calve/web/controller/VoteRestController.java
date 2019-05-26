@@ -2,7 +2,7 @@ package com.github.calve.web.controller;
 
 import com.github.calve.UserUtil;
 import com.github.calve.model.*;
-import com.github.calve.repository.SystemRepository;
+import com.github.calve.service.SystemService;
 import com.github.calve.repository.datajpa.*;
 import com.github.calve.service.UserService;
 import com.github.calve.to.UserTo;
@@ -46,13 +46,13 @@ public class VoteRestController {
     private CrudUserRepository userRepo;
     private CrudRestaurantRepo restaurantRepo;
     private UserService userService;
-    private SystemRepository systemRepository;
+    private SystemService systemRepository;
 
     @Autowired
     public VoteRestController(CrudMenuRepository menuRepo, CrudVoteLogRepo voteLogRepo,
                               CrudHistoryRepo historyRepo, CrudUserRepository userRepo,
                               CrudRestaurantRepo restaurantRepo, UserService userService,
-                              SystemRepository systemRepository) {
+                              SystemService systemRepository) {
         this.menuRepo = menuRepo;
         this.voteLogRepo = voteLogRepo;
         this.historyRepo = historyRepo;
@@ -60,7 +60,7 @@ public class VoteRestController {
         this.restaurantRepo = restaurantRepo;
         this.userService = userService;
         this.systemRepository = systemRepository;
-    }
+    }//TODO ALL AUTOWIRED IN CONSTRUCTORS
 
     @PutMapping("/vote")//@RequestParam
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -80,8 +80,8 @@ public class VoteRestController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     void unlockVote() {
         if (CHANGE_VOTING_ENABLE)
-            voteLogRepo.delete(SecurityUtil.authUserId());
-        else
+            //voteLogRepo.delete(SecurityUtil.authUserId());
+        //else
             throw new IllegalRequestDataException("Period of change vote is expired.");
     }
 
@@ -118,10 +118,10 @@ public class VoteRestController {
 
     @Transactional
     User createUser(@RequestBody UserTo userTo) throws Exception {
-        if (!userTo.isRestaurantEmpty()) {
+/*        if (!userTo.isRestaurantEmpty()) {
             Restaurant restaurant = restaurantRepo.save(new Restaurant(userTo.getNewRestaurantName()));
             userTo.setRestaurant(restaurant);
-        }
+        }*/
         User user = UserUtil.createNewFromTo(userTo);
         checkNew(user);
         return userService.create(user);

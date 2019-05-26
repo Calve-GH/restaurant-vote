@@ -5,8 +5,6 @@
     <!--http://www.ehcache.org/documentation/3.4/xml.html-->
     <!--http://www.ehcache.org/documentation/3.1/107.html#supplement-jsr-107-configurations-->
 
-    <!--<persistence directory="${user.home}/cache-data"/>-->
-
     <cache-template name="dishCache">
         <expiry>
             <ttl unit="hours">4</ttl>

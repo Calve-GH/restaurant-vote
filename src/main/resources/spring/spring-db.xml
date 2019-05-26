@@ -65,6 +65,8 @@
               p:entityManagerFactory-ref="entityManagerFactory"/>
 
         <bean class="com.github.calve.repository.JpaUtil"/>
+        <bean class="com.github.calve.repository.MenuUtil"/>
+
 
         <context:component-scan base-package="com.github.calve.repository"/>
         <jpa:repositories base-package="com.github.calve.repository"/>

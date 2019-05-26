@@ -1,8 +1,10 @@
-package com.github.calve.repository;
+package com.github.calve.service;
 
 import com.github.calve.model.Menu;
 import com.github.calve.model.MenuItem;
 import com.github.calve.model.VoteLog;
+import com.github.calve.repository.JpaUtil;
+import com.github.calve.repository.MenuUtil;
 import com.github.calve.repository.datajpa.CrudHistoryRepo;
 import com.github.calve.repository.datajpa.CrudMenuItemRepository;
 import com.github.calve.repository.datajpa.CrudMenuRepository;
@@ -18,7 +20,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public class DataJpaSystemRepositoryImpl implements SystemRepository {
+public class DataJpaSystemServiceImpl implements SystemService {
 
     @Autowired
     private CrudMenuRepository menuRepo;
@@ -30,14 +32,14 @@ public class DataJpaSystemRepositoryImpl implements SystemRepository {
     private CrudHistoryRepo historyRepo;
     @Autowired
     private CacheManager cacheManager;
-    @Autowired(required = false)
+    @Autowired
     private JpaUtil jpaUtil;
 
     @Transactional
     @Override
     public void resetAndLogVoteSystem() {
         List<Menu> dailyVoteList = menuRepo.findAllByDate(LocalDate.now());
-        historyRepo.saveAll(JpaUtil.convertMenuListToHistoryList(dailyVoteList));
+        historyRepo.saveAll(MenuUtil.convertMenuListToHistoryList(dailyVoteList));
 
         menuItemRepo.deleteAll();
         menuRepo.deleteAll();
@@ -46,20 +48,10 @@ public class DataJpaSystemRepositoryImpl implements SystemRepository {
         clearCache();
     }
 
-    @Override
-    public List<MenuItem> getMenuItems() {
-        return menuItemRepo.findAll();
-    }
-
-    @Override
-    public List<VoteLog> getVoteLogs() {
-        return voteLogRepo.findAll();
-    }
-
     @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) {
         List<Menu> unsavedMenus = menuRepo.findByDateBefore(LocalDate.now());
-        historyRepo.saveAll(JpaUtil.convertMenuListToHistoryList(unsavedMenus));
+        historyRepo.saveAll(MenuUtil.convertMenuListToHistoryList(unsavedMenus));
         menuRepo.deleteAll(unsavedMenus);
         voteLogRepo.deleteAllByDateBefore(LocalDate.now());
     }

@@ -49,38 +49,24 @@ public class User extends AbstractNamedEntity {
     @BatchSize(size = 200)
     private Set<Role> roles;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "restaurant_id", nullable = true)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Restaurant restaurant = null;
-
     public User() {
     }
 
     public User(User u) {
-        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getRestaurant(), u.isEnabled(), u.getRoles());
+        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.isEnabled(), u.getRoles());
     }
 
-    public User(Integer id, String name, String email, String password, Restaurant restaurant, Role role, Role... roles) {
-        this(id, name, email, password, restaurant, true, EnumSet.of(role, roles));
+    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
+        this(id, name, email, password, true, EnumSet.of(role, roles));
     }
 
-    public User(Integer id, String name, String email, String password, Restaurant restaurant, boolean enabled,
+    public User(Integer id, String name, String email, String password, boolean enabled,
                 Collection<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
-        this.restaurant = restaurant;
         this.enabled = enabled;
         setRoles(roles);
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
     }
 
     public String getEmail() {
@@ -133,7 +119,6 @@ public class User extends AbstractNamedEntity {
                 "email='" + email + '\'' +
                 ", enabled=" + enabled +
                 ", roles=" + roles +
-                ", restaurant=" + restaurant +
                 ", name='" + name + '\'' +
                 ", id=" + id +
                 '}';

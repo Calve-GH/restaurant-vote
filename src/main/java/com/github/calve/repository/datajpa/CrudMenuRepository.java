@@ -17,17 +17,16 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
 
+    @CacheEvict(value = "menus", allEntries = true)
     @Transactional
-    void deleteById(Integer id);
+    @Query("DELETE FROM Menu m WHERE m.id=:id")
+    int delete(Integer id);
 
 
     @CacheEvict(value = {"menus", "restaurants"})
     @Override
     @Transactional
     Menu save(Menu item);
-
-    @Override
-    List<Menu> findAll();
 
     Optional<Menu> findById(Integer id);
 
@@ -38,12 +37,21 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
     @Transactional
     @Modifying
     @Query("DELETE FROM Menu m WHERE m.restaurant.id=:restId")
-    void deleteByRestaurantId(@Param("restId") Integer restaurantId);
+    void deleteByRestaurantId(@Param("restId") Integer restaurantId);//TODO
 
-    @Query("SELECT m FROM Menu m WHERE m.restaurant.id=:restId ORDER BY m.date DESC")
-    List<Menu> getAllByRestaurant(@Param("restId") int restaurantId);
+    @EntityGraph(attributePaths = {"restaurant", "items"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT m FROM Menu m WHERE m.restaurant.id=?1")
+    Menu getWithMenuItems(Integer id);
 
-    Menu getMenuByDateAndRestaurantId(LocalDate date, Integer restaurantId);
+//----------------------
+    @Transactional
+    @EntityGraph(attributePaths = {"restaurant", "items"}, type = EntityGraph.EntityGraphType.LOAD)
+    List<Menu> findByDateBefore(LocalDate date);
+
+    @Override
+    @EntityGraph(attributePaths = {"restaurant", "items"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT m FROM Menu m ORDER BY m.date DESC")
+    List<Menu> findAll();
 
     @Cacheable("menus")
     @EntityGraph(attributePaths = {"restaurant", "items"}, type = EntityGraph.EntityGraphType.LOAD)
@@ -51,10 +59,10 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
     List<Menu> findAllByDate(LocalDate date);
 
     @EntityGraph(attributePaths = {"restaurant", "items"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT m FROM Menu m WHERE m.restaurant.id=?1")
-    Menu getWithMI(Integer id);
+    @Query("SELECT m FROM Menu m WHERE m.restaurant.id=:restId ORDER BY m.date DESC")
+    List<Menu> findAllByRestaurantId(@Param("restId") int restaurantId);
 
-    @Transactional
     @EntityGraph(attributePaths = {"restaurant", "items"}, type = EntityGraph.EntityGraphType.LOAD)
-    List<Menu> findByDateBefore(LocalDate date);
+    @Query("SELECT m FROM Menu m WHERE m.date=?1 AND m.restaurant.id=?2")
+    Menu findByDateAndRestaurantId(LocalDate date, Integer restaurantId);
 }

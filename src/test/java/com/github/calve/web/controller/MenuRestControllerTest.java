@@ -61,7 +61,7 @@ public class MenuRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isCreated());
 
         Menu returned = readFromJson(actions, Menu.class);
-        MENU_3_NEW.setId(returned.getId());
+        //MENU_3_NEW.setId(returned.getId());
         assertMatch(returned, MENU_3);
         assertMatch(returned.getRestaurant(), MENU_3.getRestaurant());
         addMenuItemsToTestMenu(MENU_3, MENU_ITEM_6, MENU_ITEM_7, MENU_ITEM_8, MENU_ITEM_9);

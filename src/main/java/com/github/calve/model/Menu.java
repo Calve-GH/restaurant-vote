@@ -28,13 +28,16 @@ public class Menu extends AbstractBaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "menu", orphanRemoval = true)
+    //{CascadeType.PERSIST, CascadeType.MERGE}
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "menu", orphanRemoval = true)
     @JsonIgnoreProperties(value = "menu", allowSetters = true)
     private Set<MenuItem> items = new HashSet<>(0);
 
-
     @Column(name = "vote_count", nullable = false)
     private Integer voteCount = 0;
+
+    public Menu() {
+    }
 
     public Menu(Integer id, @NotNull LocalDate date, Restaurant restaurant, Integer voteCount) {
         super(id);
@@ -44,18 +47,24 @@ public class Menu extends AbstractBaseEntity {
             this.voteCount = voteCount;
     }
 
-    public Menu(@NotNull LocalDate date, Restaurant restaurant) {
+    public Menu(LocalDate date, Restaurant restaurant) {
         this.date = date;
         this.restaurant = restaurant;
     }
 
-    public Menu(@NotNull LocalDate date, Restaurant restaurant, Set<MenuItem> dishes) {
+    public Menu(LocalDate date, Restaurant restaurant, Set<MenuItem> dishes) {
         this.date = date;
         this.restaurant = restaurant;
         this.items = dishes;
     }
 
-    public Menu() {
+    public void addMenuItem(MenuItem menuItem) {
+        this.items.add(menuItem);
+        menuItem.setMenu(this);
+    }
+    public void removeMenuItem(MenuItem menuItem) {
+        this.items.remove(menuItem);
+        menuItem.setMenu(null);
     }
 
     public void vote() {

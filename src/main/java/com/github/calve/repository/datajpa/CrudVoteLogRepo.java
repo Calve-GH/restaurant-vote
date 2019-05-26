@@ -1,5 +1,6 @@
 package com.github.calve.repository.datajpa;
 
+import com.github.calve.model.User;
 import com.github.calve.model.VoteLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,12 +19,14 @@ public interface CrudVoteLogRepo extends JpaRepository<VoteLog, Integer> {
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM VoteLog v WHERE v.user.id=:id")
-    int delete(@Param("id") int userId);
+    @Query("DELETE FROM VoteLog v WHERE v.user.id=:id AND v.date=:date")
+    int delete(@Param("id") int userId, @Param("date") LocalDate date);
 
     @Transactional
     @Override
     VoteLog save(VoteLog voteLog);
+
+    VoteLog findByDateAndUser(LocalDate date, User user);
 
     List<VoteLog> findAll();
 

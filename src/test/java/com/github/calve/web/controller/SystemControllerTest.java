@@ -1,10 +1,10 @@
 package com.github.calve.web.controller;
 
-import com.github.calve.repository.SystemRepository;
 import com.github.calve.repository.datajpa.CrudHistoryRepo;
-import com.github.calve.repository.datajpa.CrudMenuRepository;
+import com.github.calve.repository.datajpa.CrudMenuItemRepository;
 import com.github.calve.repository.datajpa.CrudRestaurantRepo;
 import com.github.calve.repository.datajpa.CrudVoteLogRepo;
+import com.github.calve.service.SystemService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class SystemControllerTest extends AbstractControllerTest {
 
     @Autowired
-    private SystemRepository systemRepository;
+    private SystemService systemService;
     @Autowired
     private CrudVoteLogRepo voteLogRepo;
     @Autowired
@@ -24,15 +24,15 @@ public class SystemControllerTest extends AbstractControllerTest {
     @Autowired
     private CrudRestaurantRepo restaurantRepo;
     @Autowired
-    private CrudMenuRepository menuRepository;
+    private CrudMenuItemRepository menuItemRepo;
 
     @Test
     void testResetAndLogSystem() {
-        systemRepository.resetAndLogVoteSystem();
+        systemService.resetAndLogVoteSystem();
         assertEquals(historyRepo.findAll().size(), 4);
         assertEquals(voteLogRepo.findAll().size(), 0);
-        assertEquals(systemRepository.getMenuItems().size(), 0);
-        assertEquals(systemRepository.getVoteLogs().size(), 0);
+        assertEquals(menuItemRepo.findAll().size(), 0);
+        assertEquals(voteLogRepo.findAll().size(), 0);
     }
 
     @Test
