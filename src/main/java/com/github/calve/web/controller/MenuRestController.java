@@ -13,11 +13,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.time.LocalDate;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.github.calve.repository.MenuUtil.createFromTo;
@@ -32,7 +35,7 @@ public class MenuRestController {
 
     public static final String REST_URL = "/rest/admin";
     @Value("${dish.list.min.size}")
-    private Integer minDishes;
+    private Integer minDishes;//TODO
     @Value("${dish.list.max.size}")
     private Integer maxDishes;
 
@@ -109,21 +112,24 @@ public class MenuRestController {
         if (restaurantId == null) {
             return menuRepo.findAllByDate(date);
         }
-        return Collections.singletonList(menuRepo.findByDateAndRestaurantId(date, restaurantId));
+        return Arrays.asList(menuRepo.findByDateAndRestaurantId(date, restaurantId));
     }
 
     @PostMapping(value = "/menu", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void saveMenu(@Valid @RequestBody MenuTo menuTo) {
+    public ResponseEntity<Menu> saveMenu(@Valid @RequestBody MenuTo menuTo) {
         Menu newMenu = createNewFromTo(menuTo);
         checkNew(newMenu);
         try {
-            menuRepo.save(newMenu);
+            newMenu = menuRepo.save(newMenu);
         } catch (Exception e) {
             Throwable t = getCause(e);
             if (t.getMessage().contains(MENU_UNIQUE_RESTAURANT_DATE_IDX))
                 throw new StoreEntityException(MENU_UNIQUE_RESTAURANT_DATE_IDX_MSG);
         }
+        URI newMenuUri = ServletUriComponentsBuilder.fromCurrentContextPath().path(REST_URL + "/menu/"
+                + newMenu.getId()).buildAndExpand().toUri();
+        return ResponseEntity.created(newMenuUri).body(newMenu);
     }
 
     @PutMapping(value = "/menu/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

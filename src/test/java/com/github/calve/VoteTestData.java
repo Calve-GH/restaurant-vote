@@ -23,8 +23,8 @@ public class VoteTestData {
     public static final Dish DISH_5 = new Dish(START_SEQ + 7, "Coffee");
 //    public static final Dish DISH_6 = new Dish(START_SEQ + 26, "Chicken Soup");
 
-    public static final Menu MENU_1 = new Menu(START_SEQ + 8, LocalDate.now(), RESTAURANT_1, 10);
-    public static final Menu MENU_2 = new Menu(START_SEQ + 9, LocalDate.now(), RESTAURANT_2, 10);
+    public static final Menu MENU_1 = new Menu(START_SEQ + 8, LocalDate.now(), RESTAURANT_1, 11);
+    public static final Menu MENU_2 = new Menu(START_SEQ + 9, LocalDate.now(), RESTAURANT_2, 12);
     public static final Menu MENU_3 = new Menu(START_SEQ + 10, LocalDate.now().plusDays(1), RESTAURANT_3, 0);
     public static final Menu MENU_4 = new Menu(START_SEQ + 11, LocalDate.now().plusDays(1), RESTAURANT_1, 0);
     public static final Menu MENU_5 = new Menu(START_SEQ + 12, LocalDate.now().plusDays(2), RESTAURANT_1, 0);
@@ -71,12 +71,12 @@ public class VoteTestData {
 
     public static final Menu MENU_6_NEW = new Menu(null, LocalDate.now(), RESTAURANT_3, 0); //100038
 
-    public static final MenuItem MENU_ITEM_16_NEW = new MenuItem(MENU_1, DISH_3, 15.1);//100039
-    public static final MenuItem MENU_ITEM_17_NEW = new MenuItem(MENU_1, DISH_4, 2.1);//100040
-    public static final MenuItem MENU_ITEM_18_NEW = new MenuItem(MENU_1, DISH_5, 3.2);//100041
-    public static final MenuItem MENU_ITEM_16 = new MenuItem(START_SEQ + 25, MENU_1, DISH_3, 15.1);//100039
-    public static final MenuItem MENU_ITEM_17 = new MenuItem(START_SEQ + 26, MENU_1, DISH_4, 2.1);//100040
-    public static final MenuItem MENU_ITEM_18 = new MenuItem(START_SEQ + 27, MENU_1, DISH_5, 3.2);//100041
+    public static final MenuItem MENU_ITEM_16_NEW = new MenuItem(null, DISH_3, 15.1);//100039
+    public static final MenuItem MENU_ITEM_17_NEW = new MenuItem(null, DISH_4, 2.1);//100040
+    public static final MenuItem MENU_ITEM_18_NEW = new MenuItem(null, DISH_5, 3.2);//100041
+    public static final MenuItem MENU_ITEM_16 = new MenuItem(START_SEQ + 39, MENU_1, DISH_3, 15.1);//100039
+    public static final MenuItem MENU_ITEM_17 = new MenuItem(START_SEQ + 40, MENU_1, DISH_4, 2.1);//100040
+    public static final MenuItem MENU_ITEM_18 = new MenuItem(START_SEQ + 41, MENU_1, DISH_5, 3.2);//100041
 
     public static final Set<MenuItem> MENU_DISH_LIST_TRANSIENT = new HashSet<>(Arrays.asList(MENU_ITEM_16_NEW,
             MENU_ITEM_17_NEW, MENU_ITEM_18_NEW));

@@ -1,7 +1,5 @@
 package com.github.calve.to;
 
-import com.github.calve.model.Restaurant;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

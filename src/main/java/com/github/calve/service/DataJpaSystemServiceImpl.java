@@ -14,12 +14,13 @@ import org.springframework.cache.CacheManager;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Repository
+@Service("systemService")
 public class DataJpaSystemServiceImpl implements SystemService {
 
     @Autowired
@@ -47,14 +48,14 @@ public class DataJpaSystemServiceImpl implements SystemService {
 
         clearCache();
     }
-
-    @EventListener
+    public void onApplicationEvent(ContextRefreshedEvent event) {}
+/*    @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) {
         List<Menu> unsavedMenus = menuRepo.findByDateBefore(LocalDate.now());
         historyRepo.saveAll(MenuUtil.convertMenuListToHistoryList(unsavedMenus));
         menuRepo.deleteAll(unsavedMenus);
         voteLogRepo.deleteAllByDateBefore(LocalDate.now());
-    }
+    }*/
 
     private void clearCache() {
         cacheManager.getCache("users").clear();

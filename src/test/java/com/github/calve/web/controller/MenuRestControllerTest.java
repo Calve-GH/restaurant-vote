@@ -2,12 +2,18 @@ package com.github.calve.web.controller;
 
 import com.github.calve.model.Dish;
 import com.github.calve.model.Menu;
+import com.github.calve.model.Restaurant;
+import com.github.calve.repository.MenuUtil;
+import com.github.calve.to.MenuTo;
 import com.github.calve.web.json.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static com.github.calve.TestUtil.*;
 import static com.github.calve.VoteTestData.*;
@@ -30,19 +36,33 @@ public class MenuRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void testGetDailyMenuSuccess() throws Exception {
-        mockMvc.perform(get(MenuRestController.REST_URL)
+    void testGetDailyMenuByRestaurantSuccess() throws Exception {
+        addMenuItemsToTestMenu(MENU_1, MENU_ITEM_1, MENU_ITEM_2, MENU_ITEM_3, MENU_ITEM_4, MENU_ITEM_5);
+
+        mockMvc.perform(get(REST_URL + "menu?date=2019-05-26&restaurantId=100000")
                 .with(userHttpBasic(TEST_ADMIN_1)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(result -> assertMatch(readFromJsonMvcResult(result, Menu.class), MENU_1));
+                .andExpect(result -> assertMatch(readListFromJsonMvcResult(result, Menu.class), Collections.singletonList(MENU_1)));
+    }
+
+    @Test
+    void testGetAllDailyMenuSuccess() throws Exception {
+        addMenuItemsToTestMenu(MENU_1, MENU_ITEM_1, MENU_ITEM_2, MENU_ITEM_3, MENU_ITEM_4, MENU_ITEM_5);
+        addMenuItemsToTestMenu(MENU_2, MENU_ITEM_6, MENU_ITEM_7);
+
+        mockMvc.perform(get(REST_URL + "menu?date=2019-05-26")
+                .with(userHttpBasic(TEST_ADMIN_1)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(result -> assertMatch(readListFromJsonMvcResult(result, Menu.class), Arrays.asList(MENU_1, MENU_2)));
     }
 
     @Test
     void testGetDishesSuccess() throws Exception {
-        mockMvc.perform(get(MenuRestController.REST_URL + "/dishes")
+        mockMvc.perform(get(MenuRestController.REST_URL + "/dish")
                 .with(userHttpBasic(TEST_ADMIN_1)))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -51,28 +71,43 @@ public class MenuRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void testSaveMenuSuccess() throws Exception {
+    void getRestaurantsSuccess() throws Exception {
+        mockMvc.perform(get(REST_URL + "restaurant")
+                .with(userHttpBasic(TEST_ADMIN_1)))
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(result -> assertThat(readListFromJsonMvcResult(result, Restaurant.class))
+                        .isEqualTo(Arrays.asList(RESTAURANT_1, RESTAURANT_2, RESTAURANT_3)));
+    }
 
-        ResultActions actions = mockMvc.perform(post(REST_URL)
+    @Test
+    void testSaveMenuSuccess() throws Exception {
+        MenuTo menuTo = new MenuTo(LocalDate.now(), RESTAURANT_3, new ArrayList<>(MENU_DISH_LIST_TRANSIENT));
+        Menu expected = MenuUtil.createNewFromTo(menuTo);
+        expected.setItems(MENU_DISH_LIST_PERSISTENT);
+        ResultActions actions = mockMvc.perform(post(REST_URL + "menu")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(Arrays.asList(DISH_TO_1, DISH_TO_2, DISH_TO_3, DISH_TO_4)))
+                .content(JsonUtil.writeValue(menuTo))
                 .with(userHttpBasic(TEST_ADMIN_1)))
                 .andDo(print())
                 .andExpect(status().isCreated());
 
         Menu returned = readFromJson(actions, Menu.class);
-        //MENU_3_NEW.setId(returned.getId());
-        assertMatch(returned, MENU_3);
-        assertMatch(returned.getRestaurant(), MENU_3.getRestaurant());
-        addMenuItemsToTestMenu(MENU_3, MENU_ITEM_6, MENU_ITEM_7, MENU_ITEM_8, MENU_ITEM_9);
-        assertMatch(returned.getItems(), MENU_3.getItems());
+        expected.setId(returned.getId());
+        assertMatch(returned, expected);
+        assertMatch(returned.getRestaurant(), expected.getRestaurant());
+        assertMatch(returned.getItems(), expected.getItems());
     }
 
     @Test
     void testSaveMenuOutOfRangeFail() throws Exception {
-        mockMvc.perform(post(REST_URL)
+        MENU_DISH_LIST_TRANSIENT.removeAll(Arrays.asList(MENU_ITEM_16_NEW, MENU_ITEM_17_NEW));
+        MenuTo menuTo = new MenuTo(LocalDate.now(), RESTAURANT_3, new ArrayList<>(MENU_DISH_LIST_TRANSIENT));
+        Menu expected = MenuUtil.createNewFromTo(menuTo);
+        expected.setItems(MENU_DISH_LIST_PERSISTENT);
+        ResultActions actions = mockMvc.perform(post(REST_URL + "menu")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(Arrays.asList(DISH_TO_1)))
+                .content(JsonUtil.writeValue(menuTo))
                 .with(userHttpBasic(TEST_ADMIN_1)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());

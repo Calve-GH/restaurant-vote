@@ -19,7 +19,24 @@ public class MenuTo extends BaseTo implements Serializable {
     @Size(min = 2, max = 5)
     private List<MenuItem> menuItems;
 
+    private Integer voteCount = 0;
+
     public MenuTo() {
+    }
+
+    public MenuTo(@NotNull LocalDate date, @NotNull Restaurant restaurant, @Size(min = 2, max = 5) List<MenuItem> menuItems) {
+        this.id = null;
+        this.date = date;
+        this.restaurant = restaurant;
+        this.menuItems = menuItems;
+    }
+
+    public Integer getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(Integer voteCount) {
+        this.voteCount = voteCount;
     }
 
     public LocalDate getDate() {

@@ -90,15 +90,7 @@ class VoteRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
-    @Test
-    void getRestaurantsSuccess() throws Exception {
-        mockMvc.perform(get(REST_URL + "vote/restaurants")
-                .with(userHttpBasic(TEST_USER_1)))
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(result -> assertThat(readListFromJsonMvcResult(result, Restaurant.class))
-                        .isEqualTo(Arrays.asList(RESTAURANT_1, RESTAURANT_2, RESTAURANT_3)));
-    }
+
 
     @Test
     void getVoteHistorySuccess() throws Exception {

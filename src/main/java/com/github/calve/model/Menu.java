@@ -28,7 +28,6 @@ public class Menu extends AbstractBaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
-    //{CascadeType.PERSIST, CascadeType.MERGE}
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "menu", orphanRemoval = true)
     @JsonIgnoreProperties(value = "menu", allowSetters = true)
     private Set<MenuItem> items = new HashSet<>(0);

@@ -94,6 +94,9 @@ class VoteRepoImplTest {
 
     @Test
     void saveMenuReWriteSuccess() {
+        for(MenuItem item : MENU_DISH_LIST_TRANSIENT) {
+            item.setMenu(MENU_1);
+        }
         MENU_1.setItems(MENU_DISH_LIST_TRANSIENT);
         Menu saved = menuRepo.save(MENU_1);
         assertMatch(saved, MENU_1);
