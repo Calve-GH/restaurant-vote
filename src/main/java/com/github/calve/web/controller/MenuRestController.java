@@ -68,13 +68,13 @@ public class MenuRestController {
     public ResponseEntity<Menu> saveMenu(@Valid @RequestBody MenuTo menuTo) {
         Menu newMenu = createNewFromTo(menuTo);
         checkNew(newMenu);
-//        try {
+        try {
             newMenu = menuRepo.save(newMenu);
-/*        } catch (Exception e) {
+        } catch (Exception e) {
             Throwable t = getCause(e);
             if (t.getMessage().contains(MENU_UNIQUE_RESTAURANT_DATE_IDX))
                 throw new StoreEntityException(MENU_UNIQUE_RESTAURANT_DATE_IDX_MSG);
-        }*/
+        }
         URI newMenuUri = ServletUriComponentsBuilder.fromCurrentContextPath().path(REST_URL + "/menu/"
                 + newMenu.getId()).buildAndExpand().toUri();
         return ResponseEntity.created(newMenuUri).body(newMenu);

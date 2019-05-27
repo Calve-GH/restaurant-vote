@@ -74,15 +74,13 @@ public class VoteRestController {
             VoteLog voteLog = new VoteLog(user, restaurant);
             if (CHANGE_VOTING_ENABLE)
                 voteLogRepo.delete(voteLog.getUser().getId(), voteLog.getDate());
-
-            voteLogRepo.save(voteLog);
-/*            try {
-
-            }catch (Exception e) {
+            try {
+                voteLogRepo.save(voteLog);
+            } catch (Exception e) {
                 Throwable t = getCause(e);
-                if (t.getMessage().contains(VOTE_LOG_UNIQUE_USER_DATE_IDX)) //TODO
+                if (t.getMessage().contains(VOTE_LOG_UNIQUE_USER_DATE_IDX))
                     throw new StoreEntityException(VOTE_LOG_UNIQUE_USER_DATE_IDX_MSG);
-            }*/
+            }
 
         }
     }

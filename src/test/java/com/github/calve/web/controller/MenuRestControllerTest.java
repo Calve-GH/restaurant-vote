@@ -74,7 +74,7 @@ public class MenuRestControllerTest extends AbstractControllerTest {
 
     @Test
     void testSaveMenuSuccess() throws Exception {
-        MenuTo menuTo = new MenuTo(LocalDate.now(), RESTAURANT_3, new ArrayList<>(MENU_DISH_LIST_TRANSIENT));
+        MenuTo menuTo = new MenuTo(LocalDate.now(), RESTAURANT_1, new ArrayList<>(MENU_DISH_LIST_TRANSIENT));
         System.out.println(JsonUtil.writeValue(menuTo));
         Menu expected = MenuUtil.createNewFromTo(menuTo);
         expected.setItems(MENU_DISH_LIST_PERSISTENT);
@@ -171,6 +171,16 @@ public class MenuRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated());
         RESTAURANT_1.setName(restaurantName);
+    }
+
+    @Test
+    void testSaveRestaurant() throws Exception {
+        mockMvc.perform(post(REST_URL + "restaurant")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(new Restaurant(RESTAURANT_1.getName())))
+                .with(userHttpBasic(TEST_ADMIN_1)))
+                .andDo(print())
+                .andExpect(status().isCreated());
     }
 
     @Test

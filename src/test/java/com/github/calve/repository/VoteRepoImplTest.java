@@ -10,6 +10,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.Null;
@@ -63,12 +64,6 @@ class VoteRepoImplTest {
     }
 
     @Test
-    void test() {
-        menuRepo.findAll();
-        menuRepo.findById(100008);
-    }
-
-    @Test
     void getAllMenusByRestaurantId() {
         assertMatch(menuRepo.findAllByRestaurantId(RESTAURANT_1.getId()).size(), 3);
     }
@@ -85,20 +80,6 @@ class VoteRepoImplTest {
         assertMatch(menu, MENU_1);
         assertMatch(menu.getRestaurant(), MENU_1.getRestaurant());
         assertMatch(menu.getItems(), MENU_1.getItems());
-    }
-
-    @Test
-    void saveDublicate() {
-
-        Menu save = menuRepo.save(new Menu(MENU_1.getDate(), MENU_1.getRestaurant()));
-        System.out.println(save);
-    }
-
-    @Test
-    void saveDublicate2() {
-
-        restaurantRepo.save(new Restaurant("wegweg"));
-//        restaurantRepo.findAll();
     }
 
     @Test

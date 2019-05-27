@@ -56,6 +56,18 @@ class VoteRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void voteUserFail() throws Exception {
+        mockMvc.perform(post(REST_URL + "vote?id=" + RESTAURANT_1.getId())
+                .with(userHttpBasic(TEST_USER_2)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+//        List<String> list = voteLogRepo.findAllWithReferences().stream().map(VoteLog::toString).collect(Collectors.toList());
+//        assertTrue(list.contains(VOTE_LOG_NEW.toString()));
+//        assertEquals(menuRepo.findByDateAndRestaurantId(LocalDate.now(), RESTAURANT_1.getId()).getVoteCount(), 12);
+    }
+
+    @Test
     void voteByWrongRestaurantIdFail() throws Exception {
         mockMvc.perform(post(REST_URL + "vote?id=123")
                 .with(userHttpBasic(TEST_USER_1)))
