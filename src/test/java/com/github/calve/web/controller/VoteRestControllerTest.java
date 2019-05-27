@@ -7,14 +7,13 @@ import com.github.calve.repository.datajpa.CrudVoteLogRepo;
 import com.github.calve.service.UserService;
 import com.github.calve.to.UserTo;
 import com.github.calve.web.json.JsonUtil;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
-import javax.swing.plaf.synth.SynthScrollBarUI;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,7 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class VoteRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = VoteRestController.REST_URL + "/";
-    private static final Comparator<HistoryItem> HISTORY_ITEM_COMPARATOR_DESC = Comparator.comparing(HistoryItem::getDate).reversed();
+    private static final Comparator<HistoryItem> HISTORY_DATE_COMPARATOR_DESC = Comparator.comparing(HistoryItem::getDate).reversed();
+    private static final Comparator<HistoryItem> HISTORY_COMPARATOR_DESC = Comparator.comparing(HistoryItem::getId).reversed();
 
     @Autowired
     private CrudVoteLogRepo voteLogRepo;
@@ -81,19 +81,30 @@ class VoteRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getVoteHistorySuccess() throws Exception {
-        Collections.sort(HISTORY_ITEM_LIST, HISTORY_ITEM_COMPARATOR_DESC);
-        mockMvc.perform(get(REST_URL + "vote/history")
+        Collections.sort(HISTORY_ITEM_LIST_1, HISTORY_DATE_COMPARATOR_DESC);
+        mockMvc.perform(get(REST_URL + "history")
                 .with(userHttpBasic(TEST_USER_1)))
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(result -> assertThat(readListFromJsonMvcResult(result, HistoryItem.class)).isEqualTo(HISTORY_ITEM_LIST));
+                .andExpect(result -> assertThat(readListFromJsonMvcResult(result, HistoryItem.class)).isEqualTo(HISTORY_ITEM_LIST_1));
     }
 
-    @Test//TODO
+    @Test
+    void getVoteHistoryDayBeforeSuccess() throws Exception {
+        Collections.sort(HISTORY_ITEM_LIST_2, HISTORY_COMPARATOR_DESC);
+        String date = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        mockMvc.perform(get(REST_URL + "history?date=" + date)
+                .with(userHttpBasic(TEST_USER_1)))
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(result -> assertThat(readListFromJsonMvcResult(result, HistoryItem.class)).isEqualTo(HISTORY_ITEM_LIST_2));
+    }
+
+    @Test
     void getVoteHistoryByRestaurantSuccess() throws Exception {
         List<HistoryItem> listDesc = Arrays.asList(HISTORY_ITEM_1, HISTORY_ITEM_2);
-        Collections.sort(listDesc, HISTORY_ITEM_COMPARATOR_DESC);
-        mockMvc.perform(get(REST_URL + "vote/history/" + RESTAURANT_1.getId())
+        Collections.sort(listDesc, HISTORY_DATE_COMPARATOR_DESC);
+        mockMvc.perform(get(REST_URL + "history/" + RESTAURANT_1.getId())
                 .with(userHttpBasic(TEST_USER_1)))
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

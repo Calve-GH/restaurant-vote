@@ -17,14 +17,14 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
 
-    @CacheEvict(value = "menus", allEntries = true)
+//    @CacheEvict(value = "menus", allEntries = true)
     @Transactional
     @Modifying
     @Query("DELETE FROM Menu m WHERE m.id=:id")
     int delete(@Param("id")Integer id);
 
 
-    @CacheEvict(value = {"menus", "restaurants"})
+//    @CacheEvict(value = {"menus", "restaurants"})
     @Override
     @Transactional
     Menu save(Menu item);
@@ -35,16 +35,10 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
     @Override
     void deleteAll();
 
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM Menu m WHERE m.restaurant.id=:restId")
-    void deleteByRestaurantId(@Param("restId") Integer restaurantId);//TODO
-
     @EntityGraph(attributePaths = {"restaurant", "items"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.restaurant.id=?1")
     Menu getWithMenuItems(Integer id);
 
-//----------------------
     @EntityGraph(attributePaths = {"restaurant", "items"}, type = EntityGraph.EntityGraphType.LOAD)
     List<Menu> findByDateBefore(LocalDate date);
 
@@ -53,7 +47,7 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
     @Query("SELECT m FROM Menu m ORDER BY m.date DESC")
     List<Menu> findAll();
 
-    @Cacheable("menus")
+//    @Cacheable("menus")
     @EntityGraph(attributePaths = {"restaurant", "items"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.date=?1")
     List<Menu> findAllByDate(LocalDate date);

@@ -21,16 +21,12 @@ public class VoteTestData {
     public static final Dish DISH_3 = new Dish(START_SEQ + 5, "Hamburger");
     public static final Dish DISH_4 = new Dish(START_SEQ + 6, "Tea");
     public static final Dish DISH_5 = new Dish(START_SEQ + 7, "Coffee");
-//    public static final Dish DISH_6 = new Dish(START_SEQ + 26, "Chicken Soup");
 
     public static final Menu MENU_1 = new Menu(START_SEQ + 8, LocalDate.now(), RESTAURANT_1, 11);
     public static final Menu MENU_2 = new Menu(START_SEQ + 9, LocalDate.now(), RESTAURANT_2, 12);
     public static final Menu MENU_3 = new Menu(START_SEQ + 10, LocalDate.now().plusDays(1), RESTAURANT_3, 0);
     public static final Menu MENU_4 = new Menu(START_SEQ + 11, LocalDate.now().plusDays(1), RESTAURANT_1, 0);
     public static final Menu MENU_5 = new Menu(START_SEQ + 12, LocalDate.now().plusDays(2), RESTAURANT_1, 0);
-
-    /*    public static final Menu MENU_3 = new Menu(START_SEQ + 22, LocalDate.now(), RESTAURANT_1, 0);
-    public static final Menu MENU_3_NEW = new Menu(null, LocalDate.now(), RESTAURANT_1, 0);*/
 
     public static final MenuItem MENU_ITEM_1 = new MenuItem(START_SEQ + 13, MENU_1, DISH_1, 5.1);
     public static final MenuItem MENU_ITEM_2 = new MenuItem(START_SEQ + 14, MENU_1, DISH_2, 10.2);
@@ -91,19 +87,10 @@ public class VoteTestData {
 
     public static final List<Menu> DAILY_MENU_LIST = Arrays.asList(MENU_1, MENU_2);
 
-    //-----------------------------------
-    public static final DishTo DISH_TO_1 = new DishTo(START_SEQ + 3, 15.0);
-    public static final DishTo DISH_TO_2 = new DishTo(START_SEQ + 4, 10.0);
-    public static final DishTo DISH_TO_3 = new DishTo(START_SEQ + 7, 5.0);
-    public static final DishTo DISH_TO_4 = new DishTo(START_SEQ + 24, 22.1);//TODO WRONG ID
+    public static final List<HistoryItem> HISTORY_ITEM_LIST_1 = Arrays.asList(HISTORY_ITEM_1, HISTORY_ITEM_2, HISTORY_ITEM_3);
+    public static final List<HistoryItem> HISTORY_ITEM_LIST_2 = Arrays.asList(HISTORY_ITEM_1, HISTORY_ITEM_3);
 
     public static final List<Dish> DISH_LIST = Arrays.asList(DISH_1, DISH_2, DISH_3, DISH_4, DISH_5);
-
-
-    public static final List<HistoryItem> HISTORY_ITEM_LIST = Arrays.asList(HISTORY_ITEM_1, HISTORY_ITEM_2, HISTORY_ITEM_3);
-
-    public static Set<DishTo> dishes = new HashSet<>(Arrays.asList(DISH_TO_1, DISH_TO_2, DISH_TO_3, DISH_TO_4));
-
 
     public static <T> void assertMatch(T actual, T expected) {
         assertThat(actual).isEqualTo(expected);

@@ -9,7 +9,7 @@
     <tbody>
         <tr>
         <td><strong>Title</strong></td>
-            <td><strong>Get restaurant admin menu</strong></td>
+            <td><strong>Get restaurant menu</strong></td>
         </tr>
         <tr>
             <td><strong>URL</strong></td>
@@ -17,7 +17,7 @@
         </tr>
         <tr>
             <td><strong>Method</strong></td>
-            <td><strong>GET, POST</strong></td>
+            <td><strong>GET</strong></td>
         </tr>
         <tr>
             <td><strong>Success Response</strong></td>
@@ -36,26 +36,90 @@
         </pre></td>
         </tr>
         <tr>
+            <td><strong>URL Parameters</strong></td>
+            <td>date=[LocalDate], restaurantId=[Integer]
+        </tr>
+        <tr>
             <td><strong>Error Response</strong></td>
             <td><strong>Code:</strong> 401 UNAUTHORIZED
         </tr>
         <tr>
-            <td><strong>Error Response</strong></td>
-            <td><strong>Code:</strong> 422 UNPROCESSABLE ENTRY
-        <strong>Content:</strong><pre>{"url": "http://localhost:8080/restaurant_vote/rest/admin/menu", 
-        "detail": "Number of menu dishes out of range [2 - 5]"}</pre></td>
+            <td><strong>Sample Request</strong></td>
+            <td><code>/rest/admin/menu?date=2019-05-26&restaurantId=100000</code></td>
         </tr>
         <tr>
-            <td><strong>Sample Request</strong></td>
-            <td><code>/rest/admin/menu</code></td>
-        </tr>
+                <td><strong>Title</strong></td>
+                    <td><strong>Save restaurant menu</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>URL</strong></td>
+                    <td><code>/rest/admin/menu</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Method</strong></td>
+                    <td><strong>POST</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Success Response</strong></td>
+                    <td><strong>Code:</strong> 204
+                </td>
+                </tr>
+                <tr>
+                    <td><strong>Error Response</strong></td>
+                    <td><strong>Code:</strong> 401 UNAUTHORIZED
+                </tr>
+                <tr>
+                    <td><strong>Error Response</strong></td>
+                    <td><strong>Code:</strong> 422 UNPROCESSABLE ENTRY
+                <strong>Content:</strong><pre>{"url": "http://localhost:8080/restaurant_vote/rest/admin/menu", 
+                "detail": "Number of menu dishes out of range [2 - 5]"}</pre></td>
+                </tr>
+                <tr>
+                    <td><strong>Sample Request</strong></td>
+                    <td><code>/rest/admin/menu</code></td>
+                </tr>
+                        <tr>
+                                <td><strong>Title</strong></td>
+                                    <td><strong>Update restaurant menu</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>URL</strong></td>
+                                    <td><code>/rest/admin/menu</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Method</strong></td>
+                                    <td><strong>PUT</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Success Response</strong></td>
+                                    <td><strong>Code:</strong> 204
+                                </td>
+                                </tr>
+                                        <tr>
+                                            <td><strong>URL Parameters</strong></td>
+                                            <td> id=[Integer]
+                                        </tr>
+                                <tr>
+                                    <td><strong>Error Response</strong></td>
+                                    <td><strong>Code:</strong> 401 UNAUTHORIZED
+                                </tr>
+                                <tr>
+                                    <td><strong>Error Response</strong></td>
+                                    <td><strong>Code:</strong> 422 UNPROCESSABLE ENTRY
+                                <strong>Content:</strong><pre>{"url": "http://localhost:8080/restaurant_vote/rest/admin/menu", 
+                                "detail": "Number of menu dishes out of range [2 - 5]"}</pre></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sample Request</strong></td>
+                                    <td><code>/rest/admin/menu?id=100008</code></td>
+                                </tr>
         <tr>
             <td><strong>Title</strong></td>
             <td><strong>Get dishes</strong></td>
         </tr>
         <tr>
             <td><strong>URL</strong></td>
-            <td><code>/dishes</code></td>
+            <td><code>rest/admin/dish</code></td>
         </tr>
         <tr>
             <td><strong>Method</strong></td>
@@ -78,9 +142,142 @@
         </tr>
         <tr>
             <td><strong>Sample Request</strong></td>
-            <td><code>/rest/admin/menu/dishes</code></td>
+            <td><code>/rest/admin/dish</code></td>
         </tr>
         <tr>
+                    <td><strong>Title</strong></td>
+                    <td><strong>Add new dish</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>URL</strong></td>
+                    <td><code>/rest/admin/dish</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Method</strong></td>
+                    <td><strong>POST</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Success Response</strong></td>
+                    <td><strong>Code:</strong> 201
+                <strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Error Response</strong></td>
+                    <td><strong>Code:</strong> 401 UNAUTHORIZED
+                </tr>
+                <tr>
+                    <td><strong>Sample Request</strong></td>
+                    <td><code>/rest/admin/dish</code></td>
+                </tr>
+        <tr>
+        <tr>
+                            <td><strong>Title</strong></td>
+                            <td><strong>Delete dish</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>URL</strong></td>
+                            <td><code>/rest/admin/dish</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Method</strong></td>
+                            <td><strong>DELETE</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Success Response</strong></td>
+                            <td><strong>Code:</strong> 204
+                        <strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Error Response</strong></td>
+                            <td><strong>Code:</strong> 401 UNAUTHORIZED
+                        </tr>
+                        <tr>
+                            <td><strong>Sample Request</strong></td>
+                            <td><code>/rest/admin/dish</code></td>
+                        </tr>
+                   <tr>
+                       <td><strong>Title</strong></td>
+                       <td><strong>Get restaurants</strong></td>
+                   </tr>
+                   <tr>
+                       <td><strong>URL</strong></td>
+                       <td><code>/rest/profile/restaurant</code></td>
+                   </tr>
+                   <tr>
+                       <td><strong>Method</strong></td>
+                       <td><strong>GET</strong></td>
+                   </tr>
+                   <tr>
+                       <td><strong>Success Response</strong></td>
+                       <td><strong>Code:</strong> 200
+                       <strong>Content:</strong><pre>
+                       [{
+                           "id": 100000,
+                           "name": "Sweet bobaleh"},
+                       {
+                           "id": 100001,
+                           "name": "ITAKA"},
+                       {
+                           "id": 100002,
+                           "name": "Hunter Village"
+                       }]
+                       </pre></td>
+                   </tr>
+                   <tr>
+                       <td><strong>Sample Request</strong></td>
+                       <td><code>/rest/profile/restaurants</code></td>
+                   </tr>     
+                       <tr>
+                                   <td><strong>Title</strong></td>
+                                   <td><strong>Add new restaurant</strong></td>
+                               </tr>
+                               <tr>
+                                   <td><strong>URL</strong></td>
+                                   <td><code>/rest/admin/restaurant</code></td>
+                               </tr>
+                               <tr>
+                                   <td><strong>Method</strong></td>
+                                   <td><strong>POST</strong></td>
+                               </tr>
+                               <tr>
+                                   <td><strong>Success Response</strong></td>
+                                   <td><strong>Code:</strong> 201
+                               <strong></td>
+                               </tr>
+                               <tr>
+                                   <td><strong>Error Response</strong></td>
+                                   <td><strong>Code:</strong> 401 UNAUTHORIZED
+                               </tr>
+                               <tr>
+                                   <td><strong>Sample Request</strong></td>
+                                   <td><code>/rest/admin/restaurant</code></td>
+                               </tr>
+                       <tr>
+                       <tr>
+                                           <td><strong>Title</strong></td>
+                                           <td><strong>Delete restaurant</strong></td>
+                                       </tr>
+                                       <tr>
+                                           <td><strong>URL</strong></td>
+                                           <td><code>/rest/admin/restaurant</code></td>
+                                       </tr>
+                                       <tr>
+                                           <td><strong>Method</strong></td>
+                                           <td><strong>DELETE</strong></td>
+                                       </tr>
+                                       <tr>
+                                           <td><strong>Success Response</strong></td>
+                                           <td><strong>Code:</strong> 204
+                                       <strong></td>
+                                       </tr>
+                                       <tr>
+                                           <td><strong>Error Response</strong></td>
+                                           <td><strong>Code:</strong> 401 UNAUTHORIZED
+                                       </tr>
+                                       <tr>
+                                           <td><strong>Sample Request</strong></td>
+                                           <td><code>/rest/admin/restaurant</code></td>
+                                       </tr> 
             <td><strong>Title</strong></td>
             <td><strong>Vote list</strong></td>
         </tr>
@@ -134,7 +331,7 @@
         </tr>
         <tr>
             <td><strong>Sample Request</strong></td>
-            <td><code>/rest/profile</code></td>
+            <td><code>/rest/profile/vote</code></td>
         </tr>
         <tr>
             <td><strong>Title</strong></td>
@@ -146,7 +343,7 @@
         </tr>
         <tr>
             <td><strong>Method</strong></td>
-            <td><strong>PUT, DELETE</strong></td>
+            <td><strong>POST</strong></td>
         </tr>
         <tr>
             <td><strong>Success Response</strong></td>
@@ -169,11 +366,11 @@
             <td><em></em></td>
         <tr>
             <td><strong>Title</strong></td>
-            <td><strong>Vote History</strong></td>
+            <td><strong>Get vote history</strong></td>
         </tr>
         <tr>
             <td><strong>URL</strong></td>
-            <td><code>/rest/profile/vote/history</code></td>
+            <td><code>/rest/profile/history</code></td>
         </tr>
         <tr>
             <td><strong>Method</strong></td>
@@ -215,7 +412,7 @@
         </tr>
         <tr>
             <td><strong>Sample Request</strong></td>
-            <td><code>/rest/profile/vote/history</code></td>
+            <td><code>/rest/profile/history</code></td>
         </tr>
         <tr>
             <td><strong>Title</strong></td>
@@ -223,7 +420,7 @@
         </tr>
         <tr>
             <td><strong>URL</strong></td>
-            <td><code>/rest/profile/vote/history/id</code></td>
+            <td><code>/rest/profile/history/id</code></td>
         </tr>
         <tr>
             <td><strong>Method</strong></td>
@@ -254,39 +451,7 @@
         </tr>
         <tr>
             <td><strong>Sample Request</strong></td>
-            <td><code>/rest/profile/vote/history/100000</code></td>
-        </tr>
-        <tr>
-            <td><strong>Title</strong></td>
-            <td><strong>Restaurants</strong></td>
-        </tr>
-        <tr>
-            <td><strong>URL</strong></td>
-            <td><code>/rest/profile/vote/restaurants</code></td>
-        </tr>
-        <tr>
-            <td><strong>Method</strong></td>
-            <td><strong>GET</strong></td>
-        </tr>
-        <tr>
-            <td><strong>Success Response</strong></td>
-            <td><strong>Code:</strong> 200
-            <strong>Content:</strong><pre>
-            [{
-                "id": 100000,
-                "name": "Sweet bobaleh"},
-            {
-                "id": 100001,
-                "name": "ITAKA"},
-            {
-                "id": 100002,
-                "name": "Hunter Village"
-            }]
-            </pre></td>
-        </tr>
-        <tr>
-            <td><strong>Sample Request</strong></td>
-            <td><code>/rest/profile/vote/restaurants</code></td>
+            <td><code>/rest/profile/history/100000</code></td>
         </tr>
         <tr>
             <td><strong>Title</strong></td>
@@ -312,42 +477,29 @@
 </table>
 
 CURL:
-<p>Get all restaurants:
-curl http://localhost:8080/restaurant_vote/rest/profile/restaurants -u ivanov@gmail.com:1234567</p>
-<p>Save, update admin menu:
-curl -H "Content-Type: application/json;charset=UTF-8" -X POST -d '[{"id":100003,"name":"Soup","price":15.0},{"id":100004,"name":"French fries","price":10.0},{"id":100007,"name":"Coffee","price":5.0}]'  http://localhost:8080/restaurant_vote/rest/admin/menu -u ivanov@gmail.com:1234567</p>
-<p>Get all dishes:
-curl http://localhost:8080/restaurant_vote/rest/admin/menu/dishes -u ivanov@gmail.com:1234567</p>
-<p>Vote for restaurant with id '100000':
-curl -X PUT http://localhost:8080/restaurant_vote/rest/profile/vote/100000 -u ivanov@gmail.com:1234567</p>
-<p>Unlock vote before 11.00:
-curl -X DELETE http://localhost:8080/restaurant_vote/rest/profile/vote -u ivanov@gmail.com:1234567</p>
+<p>Save admin menu:
+curl -H "Content-Type: application/json;charset=UTF-8" -X POST -d '{"date":"2019-05-27","restaurant":{"id":100002,"name":"Hunter Village","menu_exist":false},"menuItems":[{"dish":{"id":100005,"name":"Hamburger"},"price":15.1},{"dish":{"id":100006,"name":"Tea"},"price":2.1},{"dish":{"id":100007,"name":"Coffee"},"price":3.2}],"voteCount":0}'  http://localhost:8080/restaurant_vote/rest/admin/menu -u ivanov@gmail.com:1234567</p>
+<p>Get all menus
+curl http://localhost:8080/restaurant_vote/rest/admin/menu -u ivanov@gmail.com:1234567</p>
+<p>Get menu by restaurant id
+curl http://localhost:8080/restaurant_vote/rest/admin/menu?restaurantId=100000 -u ivanov@gmail.com:1234567</p>
+<p> Get menu by restaurant id and date
+curl http://localhost:8080/restaurant_vote/rest/admin/menu?date=2019-05-27&restaurantId=100000 -u ivanov@gmail.com:1234567</p>
+<p>Get all dishes
+curl http://localhost:8080/restaurant_vote/rest/admin/dish -u ivanov@gmail.com:1234567</p>
+<p>Get all restaurants
+curl http://localhost:8080/restaurant_vote/rest/admin/restaurant -u ivanov@gmail.com:1234567</p>
 <p>Get vote list:
 curl http://localhost:8080/restaurant_vote/rest/profile -u ivanov@gmail.com:1234567</p>
 <p>Get all history:
-curl http://localhost:8080/restaurant_vote/rest/profile/vote/history -u ivanov@gmail.com:1234567</p>
+curl http://localhost:8080/restaurant_vote/rest/profile/history -u ivanov@gmail.com:1234567</p>
 <p>Get history for restaurant with id '100000':
-curl http://localhost:8080/restaurant_vote/rest/profile/vote/history/100000 -u ivanov@gmail.com:1234567</p>
-<p>Register new restaurants admin:
-curl -H "Content-Type: application/json;charset=UTF-8" -X POST -d '{"name":"newName","email":"newemail@ya.ru","password":"newPassword","newRestaurantName":"Mandondo"}'  http://localhost:8080/restaurant_vote/rest/profile/register</p>
-
+curl http://localhost:8080/restaurant_vote/rest/profile/history/100000 -u ivanov@gmail.com:1234567</p>
+<p>Vote for restaurant with id '100000':
+curl -X POST http://localhost:8080/restaurant_vote/rest/profile/vote?id=100000 -u ivanov@gmail.com:1234567</p>
 <p>Обоснование кэша:</p>
 
-<p>Dish, Restaurant - NONSTRICT_READ_WRITE, справочники, почти не меняются, время жизни 4 часа, Evict только в случае добавления.</p>
+<p>Dish, Restaurant - NONSTRICT_READ_WRITE, справочники, почти не меняются, время жизни 4 часа.</p>
 <p>History - READ_ONLY, не меняется, время жизни 24ч, Clear только при системном рестарте.</p>
-<p>Menu - NONSTRICT_READ_WRITE, время жизни минута, Evict при Save, очень большое колличество запросов от пользователей, поэтому постоянно лезть в базу
+<p>Menu - NONSTRICT_READ_WRITE, время жизни минута, очень большое колличество запросов от пользователей, поэтому постоянно лезть в базу
 за синхронизированными данными не вариант.</p>
-
-<p>Хотелка(буду рад конструктивной критике)):
-<p>1) Есть недоработанные моменты по рекомендациям. Оставил POSTRESQL, думал перейду на HSQL без проблем, 
-бился целый день, но триггер у меня так и не стал, если будет время в ближайшее время, сделаю.</p>
-<p>2) Не предусмотрел возможность Shutdown server'a, при переходе таймера в 11ч и 00.00.</p>
-<p>3) Не нравится история голосований, упростил как вариант связи Меню-Ресторан-Еда, необходим Pagination.</p>
-<p>4) Не уверен по правильности REST.</p>
-
-<p>16.05.2019 - Убрал POSTRESQL перевел на HSQLDB, ссылка на пробему с тригерами в spring-db.xml</p>
-<p>22.05.2019 - Предусмотрена возможность Shutdown server'a, если в таблицах остануться данные о голосовании в другие дни
-то они будут перенесены в историю, сразу после поднятия контекста.
-Значение константы CHANGE_VOTING_ENABLE, определяется в контроллере @PostConstruct.
-Задизейблил тест на смену голосования, т.к. он зависит от текушего времени сервера.(можно исправить в restaurant-vote.properties)
-</p>

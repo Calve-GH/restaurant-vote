@@ -13,7 +13,6 @@ public class MenuItem extends AbstractBaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", nullable = false)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnoreProperties(value = "items", allowSetters = true)
     private Menu menu;
 

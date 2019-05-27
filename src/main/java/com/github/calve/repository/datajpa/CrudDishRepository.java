@@ -16,16 +16,16 @@ import java.util.Optional;
 public interface CrudDishRepository extends JpaRepository<Dish, Integer> {
 
     @Transactional
-    @CacheEvict(value = "dishes")
+//    @CacheEvict(value = "dishes")
     Dish save(Dish dish);
 
     @Transactional
-    @CacheEvict(value = "dishes")
+//    @CacheEvict(value = "dishes")
     @Modifying
     @Query("DELETE FROM Dish d WHERE d.id=:id")
     int delete(@Param("id") Integer id);
 
-    @Cacheable(value = "dishes")
+//    @Cacheable(value = "dishes")
     List<Dish> findAll();
 
     Optional<Dish> findByName(String name);

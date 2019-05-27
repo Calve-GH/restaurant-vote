@@ -18,21 +18,21 @@ public interface CrudRestaurantRepo extends JpaRepository<Restaurant, Integer> {
     @Override
     Optional<Restaurant> findById(Integer id);
 
-    @CacheEvict(value = "restaurants", allEntries = true)
+//    @CacheEvict(value = "restaurants", allEntries = true)
     @Transactional
     @Modifying
     @Query("DELETE FROM Restaurant r WHERE r.id=:id")
     int delete(@Param("id") Integer id);
 
-    @CacheEvict(value = "restaurants", allEntries = true)
+//    @CacheEvict(value = "restaurants", allEntries = true)
     @Transactional
     Restaurant save(Restaurant restaurant);
 
-    @Cacheable("restaurants")
+//    @Cacheable("restaurants")
     @Query("SELECT r FROM Restaurant r ORDER BY r.name DESC")
     List<Restaurant> getAll();
 
-    @CacheEvict(value = "restaurants", allEntries = true)
+//    @CacheEvict(value = "restaurants", allEntries = true)
     @Transactional
     @Modifying
     @Query("UPDATE Restaurant r SET r.menu_exist=false")

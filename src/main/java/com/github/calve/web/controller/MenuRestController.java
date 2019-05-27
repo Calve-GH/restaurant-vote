@@ -14,6 +14,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -46,59 +47,6 @@ public class MenuRestController {
     @Autowired
     private CrudRestaurantRepo restaurantRepo;
 
-/*    @GetMapping
-    Menu getDailyMenu() {
-        return menuRepo.getWithMenuItems(SecurityUtil.get().getUserTo().getRestaurant().getId());
-    }*/
-
-/*    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Menu> saveDailyMenu(@RequestBody List<DishTo> items) {
-        Set<DishTo> itemsSet = new HashSet<>(items);
-        Menu createdMenu = saveDailyMenu(itemsSet, SecurityUtil.authUserId());
-        URI newMenuUri = ServletUriComponentsBuilder.fromCurrentContextPath().path(REST_URL).buildAndExpand().toUri();
-        return ResponseEntity.created(newMenuUri).body(createdMenu);
-    }*/
-
-/*    @Transactional
-    public Menu saveDailyMenu(Set<DishTo> dishes, Integer adminId) {
-        if (dishes.size() >= minDishes && dishes.size() <= maxDishes) {
-            User admin = userRepo.findById(adminId).orElse(null);
-            ValidationUtil.checkNotFound(admin, "current id");
-            menuRepo.deleteByRestaurantId(Objects.requireNonNull(admin).getRestaurant().getId());
-            Menu menu = new Menu(LocalDate.now(), admin.getRestaurant());
-            menu = menuRepo.save(menu);
-            Set<MenuItem> items = parseMenuItems(dishes, menu);
-            menu.setItems(items);
-            menuRepo.save(menu);
-            return menu;
-        }
-        throw new IllegalRequestDataException(getOutOfRangeString(minDishes, maxDishes));
-    }*/
-
-/*    private String getOutOfRangeString(Integer minDishes, Integer maxDishes) {
-        StringBuilder sb = new StringBuilder("Number of menu dishes out of range [");
-        sb.append(minDishes);
-        sb.append(" - ");
-        sb.append(maxDishes);
-        sb.append("]");
-        return sb.toString();
-    }
-
-    @NotNull
-    private Set<MenuItem> parseMenuItems(Set<DishTo> dishes, Menu menu) {
-        Set<MenuItem> items = new HashSet<>();
-        for (DishTo dishTo : dishes) {
-            Dish dishWithId;
-            if (dishTo.isNew()) {
-                dishWithId = dishRepo.save(new Dish(dishTo.getName()));
-            } else {
-                dishWithId = dishRepo.findById(dishTo.getId()).orElse(null);
-            }
-            items.add(new MenuItem(menu, dishWithId, dishTo.getPrice()));
-        }
-        return items;
-    }*/
-
     @GetMapping("/menu")
     public List<Menu> getMenus(@RequestParam(required = false) LocalDate date,
                                @RequestParam(required = false) Integer restaurantId) {
@@ -120,13 +68,13 @@ public class MenuRestController {
     public ResponseEntity<Menu> saveMenu(@Valid @RequestBody MenuTo menuTo) {
         Menu newMenu = createNewFromTo(menuTo);
         checkNew(newMenu);
-        try {
+//        try {
             newMenu = menuRepo.save(newMenu);
-        } catch (Exception e) {
+/*        } catch (Exception e) {
             Throwable t = getCause(e);
             if (t.getMessage().contains(MENU_UNIQUE_RESTAURANT_DATE_IDX))
                 throw new StoreEntityException(MENU_UNIQUE_RESTAURANT_DATE_IDX_MSG);
-        }
+        }*/
         URI newMenuUri = ServletUriComponentsBuilder.fromCurrentContextPath().path(REST_URL + "/menu/"
                 + newMenu.getId()).buildAndExpand().toUri();
         return ResponseEntity.created(newMenuUri).body(newMenu);
@@ -196,6 +144,4 @@ public class MenuRestController {
     public void deleteRestaurant(@PathVariable Integer id) {
         checkNotFoundWithId(restaurantRepo.delete(id) != 0, id);
     }
-
-
 }

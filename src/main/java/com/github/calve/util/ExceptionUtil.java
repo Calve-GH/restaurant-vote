@@ -16,6 +16,9 @@ public class ExceptionUtil {
     public static final String MENU_UNIQUE_RESTAURANT_DATE_IDX = "menu_unique_restaurant_date_idx";
     public static final String MENU_UNIQUE_RESTAURANT_DATE_IDX_MSG = "Menu with this restaurant and date already exists";
 
+    public static final String VOTE_LOG_UNIQUE_USER_DATE_IDX = "user_date_idx";
+    public static final String VOTE_LOG_UNIQUE_USER_DATE_IDX_MSG = "Vote with this user and date already exists";
+
     private ExceptionUtil() {}
 
     public static Throwable getCause(Throwable e) {

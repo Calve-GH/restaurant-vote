@@ -4,6 +4,7 @@ import com.github.calve.model.Dish;
 import com.github.calve.model.Menu;
 import com.github.calve.model.Restaurant;
 import com.github.calve.repository.MenuUtil;
+import com.github.calve.repository.datajpa.CrudMenuRepository;
 import com.github.calve.repository.datajpa.CrudRestaurantRepo;
 import com.github.calve.to.MenuTo;
 import com.github.calve.web.json.JsonUtil;
@@ -31,10 +32,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class MenuRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = MenuRestController.REST_URL + "/";
-    private static final String TODAY = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
 
     @Autowired
     private CrudRestaurantRepo restaurantRepo;
+    @Autowired
+    private CrudMenuRepository menuRepository;
 
     @Test
     void testGetAuthenticatedFail() throws Exception {
@@ -72,6 +75,7 @@ public class MenuRestControllerTest extends AbstractControllerTest {
     @Test
     void testSaveMenuSuccess() throws Exception {
         MenuTo menuTo = new MenuTo(LocalDate.now(), RESTAURANT_3, new ArrayList<>(MENU_DISH_LIST_TRANSIENT));
+        System.out.println(JsonUtil.writeValue(menuTo));
         Menu expected = MenuUtil.createNewFromTo(menuTo);
         expected.setItems(MENU_DISH_LIST_PERSISTENT);
         ResultActions actions = mockMvc.perform(post(REST_URL + "menu")
@@ -167,5 +171,16 @@ public class MenuRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated());
         RESTAURANT_1.setName(restaurantName);
+    }
+
+    @Test
+    void testSaveMenuDuplicateFail() throws Exception {
+        MenuTo menuTo = new MenuTo(MENU_1.getDate(), MENU_1.getRestaurant(), new ArrayList<>(MENU_DISH_LIST_TRANSIENT));
+        ResultActions actions = mockMvc.perform(post(REST_URL + "menu")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(menuTo))
+                .with(userHttpBasic(TEST_ADMIN_1)))
+                .andDo(print())
+                .andExpect(status().isCreated());
     }
 }

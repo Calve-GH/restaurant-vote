@@ -70,4 +70,14 @@ public class MenuTo extends BaseTo implements Serializable {
     public void setMenuItems(List<MenuItem> menuItems) {
         this.menuItems = menuItems;
     }
+
+    @Override
+    public String toString() {
+        return "MenuTo{" +
+                "date=" + date +
+                ", restaurant=" + restaurant +
+                ", menuItems=" + menuItems +
+                ", voteCount=" + voteCount +
+                '}';
+    }
 }

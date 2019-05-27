@@ -26,6 +26,10 @@ public class MenuUtil {
         return newMenu;
     }
 
+    public static Menu createNewFromToNoRef(MenuTo menuTo) {
+        return new Menu(menuTo.getDate(), menuTo.getRestaurant());
+    }
+
     public static HistoryItem convertMenuToHistoryItem(Menu menu) {
         return new HistoryItem(menu.getDate(), menu.getRestaurant(), concatMenuItems(menu), menu.getVoteCount());
     }

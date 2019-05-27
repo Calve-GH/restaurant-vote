@@ -14,7 +14,7 @@ import java.util.Set;
 
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
-@Table(name = "menu")
+@Table(name = "menu", uniqueConstraints ={@UniqueConstraint(columnNames = {"date", "restaurant_id"}, name = "menu_unique_restaurant_date_idx")})
 public class Menu extends AbstractBaseEntity {
     public static final String DATE_PATTERN = "yyyy-MM-dd";
 

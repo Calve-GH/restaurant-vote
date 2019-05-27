@@ -15,6 +15,9 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.annotation.PostConstruct;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 @SpringJUnitWebConfig(locations = {
@@ -27,6 +30,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 abstract public class AbstractControllerTest {
 
     private static final CharacterEncodingFilter CHARACTER_ENCODING_FILTER = new CharacterEncodingFilter();
+    public static final String TODAY = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
     static {
         CHARACTER_ENCODING_FILTER.setEncoding("UTF-8");
@@ -34,9 +38,6 @@ abstract public class AbstractControllerTest {
     }
 
     protected MockMvc mockMvc;
-
-    @Autowired
-    private CacheManager cacheManager;
 
     @Autowired(required = false)
     private JpaUtil jpaUtil;
@@ -54,11 +55,11 @@ abstract public class AbstractControllerTest {
     }
     @BeforeEach
     void setUp() {
-        cacheManager.getCache("users").clear();
+/*        cacheManager.getCache("users").clear();
         cacheManager.getCache("dishes").clear();
         cacheManager.getCache("menus").clear();
         cacheManager.getCache("history").clear();
-        cacheManager.getCache("restaurants").clear();
+        cacheManager.getCache("restaurants").clear();*/
         if (jpaUtil != null) {
             jpaUtil.clear2ndLevelHibernateCache();
         }

@@ -40,9 +40,9 @@
         <heap>100</heap>
     </cache-template>
 
-    <cache alias="users" uses-template="userCache"/>
-    <cache alias="dishes" uses-template="dishCache"/>
-    <cache alias="history" uses-template="historyCache"/>
-    <cache alias="menus" uses-template="menuCache"/>
-    <cache alias="restaurants" uses-template="restaurantCache"/>
+    <cache alias="com.github.calve.model.User" uses-template="userCache"/>
+    <cache alias="com.github.calve.model.Dish" uses-template="dishCache"/>
+    <cache alias="com.github.calve.model.HistoryItem" uses-template="historyCache"/>
+    <cache alias="com.github.calve.model.Menu" uses-template="menuCache"/>
+    <cache alias="com.github.calve.model.Restaurant" uses-template="restaurantCache"/>
 </config>

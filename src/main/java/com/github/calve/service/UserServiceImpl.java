@@ -29,7 +29,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
 
-    @CacheEvict(value = "users", allEntries = true)
     @Override
     public User create(User user) {
         try {
@@ -51,7 +50,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return repository.getByEmail(email);
     }
 
-    @Cacheable("users")
     @Override
     public List<User> getAll() {
         return repository.findAll();

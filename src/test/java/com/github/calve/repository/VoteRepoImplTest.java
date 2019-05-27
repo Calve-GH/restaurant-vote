@@ -63,6 +63,12 @@ class VoteRepoImplTest {
     }
 
     @Test
+    void test() {
+        menuRepo.findAll();
+        menuRepo.findById(100008);
+    }
+
+    @Test
     void getAllMenusByRestaurantId() {
         assertMatch(menuRepo.findAllByRestaurantId(RESTAURANT_1.getId()).size(), 3);
     }
@@ -79,6 +85,20 @@ class VoteRepoImplTest {
         assertMatch(menu, MENU_1);
         assertMatch(menu.getRestaurant(), MENU_1.getRestaurant());
         assertMatch(menu.getItems(), MENU_1.getItems());
+    }
+
+    @Test
+    void saveDublicate() {
+
+        Menu save = menuRepo.save(new Menu(MENU_1.getDate(), MENU_1.getRestaurant()));
+        System.out.println(save);
+    }
+
+    @Test
+    void saveDublicate2() {
+
+        restaurantRepo.save(new Restaurant("wegweg"));
+//        restaurantRepo.findAll();
     }
 
     @Test
@@ -152,9 +172,9 @@ class VoteRepoImplTest {
         Restaurant restaurant = restaurantRepo.getOne(RESTAURANT_2.getId());
         assertTrue(restaurant.getMenuExist());
         VoteLog voteLog = new VoteLog(user, restaurant);
-        voteLogRepo.delete(voteLog.getUser().getId(), voteLog.getDate());
+        voteLogRepo.delete(voteLog.getUser().getId(), voteLog.getDate());//TODO TEST On CHECK
         voteLogRepo.save(voteLog);
-        voteLogRepo.findAll();//TODO как убрать кеш
+        voteLogRepo.findAll();//TODO
         assertEquals(menuRepo.findByDateAndRestaurantId(LocalDate.now(), RESTAURANT_1.getId()).getVoteCount(), 10);
         assertEquals(menuRepo.findByDateAndRestaurantId(LocalDate.now(), RESTAURANT_2.getId()).getVoteCount(), 13);
     }
@@ -193,11 +213,11 @@ class VoteRepoImplTest {
 
     @BeforeEach
     void setUp() {
-        cacheManager.getCache("users").clear();
+/*        cacheManager.getCache("users").clear();
         cacheManager.getCache("dishes").clear();
         cacheManager.getCache("menus").clear();
         cacheManager.getCache("history").clear();
-        cacheManager.getCache("restaurants").clear();
+        cacheManager.getCache("restaurants").clear();*/
         if (jpaUtil != null) {
             jpaUtil.clear2ndLevelHibernateCache();
         }

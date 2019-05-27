@@ -7,6 +7,7 @@ import com.github.calve.service.SystemService;
 import com.github.calve.service.UserService;
 import com.github.calve.to.UserTo;
 import com.github.calve.util.ValidationUtil;
+import com.github.calve.util.exception.StoreEntityException;
 import com.github.calve.web.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import static com.github.calve.util.ExceptionUtil.*;
 import static com.github.calve.util.ValidationUtil.checkNew;
 
 @RestController
@@ -70,8 +72,18 @@ public class VoteRestController {
         ValidationUtil.checkNotFound(restaurant, "current id");
         if (restaurant.getMenuExist()) {
             VoteLog voteLog = new VoteLog(user, restaurant);
-            voteLogRepo.delete(voteLog.getUser().getId(), voteLog.getDate());
+            if (CHANGE_VOTING_ENABLE)
+                voteLogRepo.delete(voteLog.getUser().getId(), voteLog.getDate());
+
             voteLogRepo.save(voteLog);
+/*            try {
+
+            }catch (Exception e) {
+                Throwable t = getCause(e);
+                if (t.getMessage().contains(VOTE_LOG_UNIQUE_USER_DATE_IDX)) //TODO
+                    throw new StoreEntityException(VOTE_LOG_UNIQUE_USER_DATE_IDX_MSG);
+            }*/
+
         }
     }
 
@@ -80,12 +92,14 @@ public class VoteRestController {
         return menuRepo.findAllByDate(LocalDate.now());
     }
 
-    @GetMapping("/vote/history")
-    List<HistoryItem> getVoteHistory() {
+    @GetMapping("/history")
+    List<HistoryItem> getVoteHistory(@RequestParam(required = false) LocalDate date) {
+        if (date != null)
+            return historyRepo.findAllByDate(date);
         return historyRepo.findAll();
     }
 
-    @GetMapping("/vote/history/{id}")
+    @GetMapping("/history/{id}")
     List<HistoryItem> getVoteHistoryByRestaurant(@PathVariable Integer id) {
         return historyRepo.findByRestaurantId(id);
     }
