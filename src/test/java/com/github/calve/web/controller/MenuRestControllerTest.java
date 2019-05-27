@@ -8,10 +8,13 @@ import com.github.calve.repository.datajpa.CrudMenuRepository;
 import com.github.calve.repository.datajpa.CrudRestaurantRepo;
 import com.github.calve.to.MenuTo;
 import com.github.calve.web.json.JsonUtil;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Access;
 import java.time.LocalDate;
@@ -184,13 +187,23 @@ public class MenuRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @Disabled
+    @Transactional(propagation = Propagation.NEVER)
     void testSaveMenuDuplicateFail() throws Exception {
         MenuTo menuTo = new MenuTo(MENU_1.getDate(), MENU_1.getRestaurant(), new ArrayList<>(MENU_DISH_LIST_TRANSIENT));
-        ResultActions actions = mockMvc.perform(post(REST_URL + "menu")
+        mockMvc.perform(post(REST_URL + "menu")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(menuTo))
                 .with(userHttpBasic(TEST_ADMIN_1)))
                 .andDo(print())
-                .andExpect(status().isCreated());
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    void testDeleteMenuWithInvalidId() throws Exception {
+        mockMvc.perform(delete(REST_URL + "menu/1")
+                .with(userHttpBasic(TEST_ADMIN_1)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 }

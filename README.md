@@ -59,7 +59,7 @@
 </tr>
 <tr>
     <td><strong>Success Response</strong></td>
-    <td><strong>Code:</strong> 204
+    <td><strong>Code:</strong> 201
 </td>
 </tr>
 <tr>
@@ -129,6 +129,36 @@
 <tr>
     <td><strong>Sample Request</strong></td>
     <td><code>/rest/admin/menu?id=100008</code></td>
+</tr>
+<tr><th></th><th></th></tr>
+<tr>
+<td><strong>Title</strong></td>
+    <td><strong>Delte restaurant menu</strong></td>
+</tr>
+<tr>
+    <td><strong>URL</strong></td>
+    <td><code>/rest/admin/menu/id</code></td>
+</tr>
+<tr>
+    <td><strong>Method</strong></td>
+    <td><strong>DELETE</strong></td>
+</tr>
+<tr>
+    <td><strong>Success Response</strong></td>
+    <td><strong>Code:</strong> 204
+</td>
+</tr>
+<tr>
+    <td><strong>Error Response</strong></td>
+    <td><strong>Code:</strong> 401 UNAUTHORIZED
+</tr>
+<tr>
+    <td><strong>Error Response</strong></td>
+    <td><strong>Code:</strong> 422 UNPROCESSABLE ENTRY</td>
+</tr>
+<tr>
+    <td><strong>Sample Request</strong></td>
+    <td><code>/rest/admin/menu/100008</code></td>
 </tr>
 <tr><th></th><th></th></tr>
         <tr>
@@ -204,7 +234,7 @@
 </tr>
 <tr>
     <td><strong>URL</strong></td>
-    <td><code>/rest/admin/dish</code></td>
+    <td><code>/rest/admin/dish/id</code></td>
 </tr>
 <tr>
     <td><strong>Method</strong></td>
@@ -230,7 +260,7 @@
 </tr>
 <tr>
     <td><strong>Sample Request</strong></td>
-    <td><code>/rest/admin/dish</code></td>
+    <td><code>/rest/admin/dish/100005</code></td>
 </tr>
 <tr><th></th><th></th></tr>
 <tr>
@@ -314,7 +344,7 @@
 </tr>
 <tr>
     <td><strong>URL</strong></td>
-    <td><code>/rest/admin/restaurant</code></td>
+    <td><code>/rest/admin/restaurant/id</code></td>
 </tr>
 <tr>
     <td><strong>Method</strong></td>
@@ -340,7 +370,7 @@
 </tr>
 <tr>
     <td><strong>Sample Request</strong></td>
-    <td><code>/rest/admin/restaurant</code></td>
+    <td><code>/rest/admin/restaurant/100000</code></td>
 </tr> <tr><th></th><th></th></tr>
 <tr>
             <td><strong>Title</strong></td>
@@ -358,40 +388,36 @@
             <td><strong>Success Response</strong></td>
             <td><strong>Code:</strong> 200
             <strong>Content:</strong><pre>
-            	[
-            		{
-            	    "id": 100021,
+            	[{"id": 100021,
             			"date": "2019-05-15",
             			"restaurant": {
             		    "id": 100001,"name": "ITAKA"},
             		    "items": [ {
-"id": 100009,
-"dish": {
-"id": 100003, "name": "Soup"},
-"price": 5},{
-"id": 100011,
-"dish": {
-"id": 100005, "name": "Hamburger"},
-"price": 15}],
+            "id": 100009,
+            "dish": {
+            "id": 100003, "name": "Soup"},
+            "price": 5},{
+            "id": 100011,
+            "dish": {
+            "id": 100005, "name": "Hamburger"},
+            "price": 15}],
             		    "voteCount": 1
             		},
             		{
- "id": 100008,
-"date": "2019-05-15",
-"restaurant": {
-"id": 100000, "name": "Sweet bobaleh"},
-"items": [ {
-"id": 100009,
-"dish": {
-"id": 100003, "name": "Soup"},
-"price": 5},{
-"id": 100011,
-"dish": {
-"id": 100005, "name": "Hamburger"},
-"price": 15}],
-"voteCount": 11
- }
-            	]
+             "id": 100008,
+            "date": "2019-05-15",
+            "restaurant": {
+            "id": 100000, "name": "Sweet bobaleh"},
+            "items": [ {
+            "id": 100009,
+            "dish": {
+            "id": 100003, "name": "Soup"},
+            "price": 5},{
+            "id": 100011,
+            "dish": {
+            "id": 100005, "name": "Hamburger"},
+            "price": 15}],
+            "voteCount": 11}]
             </pre></td>
         </tr>
         <tr>

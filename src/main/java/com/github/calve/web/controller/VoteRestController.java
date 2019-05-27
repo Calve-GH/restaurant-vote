@@ -2,7 +2,10 @@ package com.github.calve.web.controller;
 
 import com.github.calve.UserUtil;
 import com.github.calve.model.*;
-import com.github.calve.repository.datajpa.*;
+import com.github.calve.repository.datajpa.CrudHistoryRepo;
+import com.github.calve.repository.datajpa.CrudMenuRepository;
+import com.github.calve.repository.datajpa.CrudRestaurantRepo;
+import com.github.calve.repository.datajpa.CrudVoteLogRepo;
 import com.github.calve.service.SystemService;
 import com.github.calve.service.UserService;
 import com.github.calve.to.UserTo;
@@ -44,24 +47,21 @@ public class VoteRestController {
     private CrudMenuRepository menuRepo;
     private CrudVoteLogRepo voteLogRepo;
     private CrudHistoryRepo historyRepo;
-    private CrudUserRepository userRepo;
     private CrudRestaurantRepo restaurantRepo;
     private UserService userService;
     private SystemService systemRepository;
 
     @Autowired
     public VoteRestController(CrudMenuRepository menuRepo, CrudVoteLogRepo voteLogRepo,
-                              CrudHistoryRepo historyRepo, CrudUserRepository userRepo,
-                              CrudRestaurantRepo restaurantRepo, UserService userService,
-                              SystemService systemRepository) {
+                              CrudHistoryRepo historyRepo, SystemService systemRepository,
+                              CrudRestaurantRepo restaurantRepo, UserService userService) {
         this.menuRepo = menuRepo;
         this.voteLogRepo = voteLogRepo;
         this.historyRepo = historyRepo;
-        this.userRepo = userRepo;
         this.restaurantRepo = restaurantRepo;
         this.userService = userService;
         this.systemRepository = systemRepository;
-    }//TODO ALL AUTOWIRED IN CONSTRUCTORS
+    }
 
     @PostMapping("/vote")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)

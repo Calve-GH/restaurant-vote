@@ -20,18 +20,19 @@ import java.util.List;
 @Service("systemService")
 public class DataJpaSystemServiceImpl implements SystemService {
 
-    @Autowired
     private CrudMenuRepository menuRepo;
-    @Autowired
-    private CrudMenuItemRepository menuItemRepo;
-    @Autowired
     private CrudVoteLogRepo voteLogRepo;
-    @Autowired
     private CrudHistoryRepo historyRepo;
-    @Autowired
-    private CacheManager cacheManager;
-    @Autowired
     private JpaUtil jpaUtil;
+
+    @Autowired
+    public DataJpaSystemServiceImpl(CrudMenuRepository menuRepo, CrudVoteLogRepo voteLogRepo,
+                                    CrudHistoryRepo historyRepo, JpaUtil jpaUtil) {
+        this.menuRepo = menuRepo;
+        this.voteLogRepo = voteLogRepo;
+        this.historyRepo = historyRepo;
+        this.jpaUtil = jpaUtil;
+    }
 
     @Transactional
     @Override
@@ -52,11 +53,6 @@ public class DataJpaSystemServiceImpl implements SystemService {
     }
 
     private void clearCache() {
-/*        cacheManager.getCache("users").clear();
-        cacheManager.getCache("dishes").clear();
-        cacheManager.getCache("menus").clear();
-        cacheManager.getCache("history").clear();
-        cacheManager.getCache("restaurants").clear();*/
         if (jpaUtil != null) {
             jpaUtil.clear2ndLevelHibernateCache();
         }

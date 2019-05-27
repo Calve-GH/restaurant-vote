@@ -148,14 +148,15 @@ class VoteRepoImplTest {
     }
 
     @Test
+    //@Transactional(propagation = Propagation.NEVER)
     void reVoteUserSuccess() {
         User user = userRepo.getOne(TEST_ADMIN_1.getId());
         Restaurant restaurant = restaurantRepo.getOne(RESTAURANT_2.getId());
         assertTrue(restaurant.getMenuExist());
         VoteLog voteLog = new VoteLog(user, restaurant);
-        voteLogRepo.delete(voteLog.getUser().getId(), voteLog.getDate());//TODO TEST On CHECK
+        voteLogRepo.delete(voteLog.getUser().getId(), voteLog.getDate());
         voteLogRepo.save(voteLog);
-        voteLogRepo.findAll();//TODO
+        voteLogRepo.findAll();
         assertEquals(menuRepo.findByDateAndRestaurantId(LocalDate.now(), RESTAURANT_1.getId()).getVoteCount(), 10);
         assertEquals(menuRepo.findByDateAndRestaurantId(LocalDate.now(), RESTAURANT_2.getId()).getVoteCount(), 13);
     }
@@ -194,11 +195,6 @@ class VoteRepoImplTest {
 
     @BeforeEach
     void setUp() {
-/*        cacheManager.getCache("users").clear();
-        cacheManager.getCache("dishes").clear();
-        cacheManager.getCache("menus").clear();
-        cacheManager.getCache("history").clear();
-        cacheManager.getCache("restaurants").clear();*/
         if (jpaUtil != null) {
             jpaUtil.clear2ndLevelHibernateCache();
         }

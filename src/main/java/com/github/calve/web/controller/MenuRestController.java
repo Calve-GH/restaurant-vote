@@ -14,7 +14,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -31,21 +30,21 @@ import static com.github.calve.util.ValidationUtil.*;
 
 @RestController
 @RequestMapping(value = MenuRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-@PropertySource("classpath:restaurant-vote.properties")
 public class MenuRestController {
 
     public static final String REST_URL = "/rest/admin";
-    @Value("${dish.list.min.size}")
-    private Integer minDishes;//TODO
-    @Value("${dish.list.max.size}")
-    private Integer maxDishes;
+
+    private CrudMenuRepository menuRepo;
+    private CrudDishRepository dishRepo;
+    private CrudRestaurantRepo restaurantRepo;
 
     @Autowired
-    private CrudMenuRepository menuRepo;
-    @Autowired
-    private CrudDishRepository dishRepo;
-    @Autowired
-    private CrudRestaurantRepo restaurantRepo;
+    public MenuRestController(CrudMenuRepository menuRepo, CrudDishRepository dishRepo,
+                              CrudRestaurantRepo restaurantRepo) {
+        this.menuRepo = menuRepo;
+        this.dishRepo = dishRepo;
+        this.restaurantRepo = restaurantRepo;
+    }
 
     @GetMapping("/menu")
     public List<Menu> getMenus(@RequestParam(required = false) LocalDate date,
