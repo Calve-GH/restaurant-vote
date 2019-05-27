@@ -12,8 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class VoteTestData {
 
-    public static final Restaurant RESTAURANT_1 = new Restaurant(START_SEQ, "Sweet bobaleh");
-    public static final Restaurant RESTAURANT_2 = new Restaurant(START_SEQ + 1, "ITAKA");
+    public static final Restaurant RESTAURANT_1 = new Restaurant(START_SEQ, "Sweet bobaleh", true);
+    public static final Restaurant RESTAURANT_2 = new Restaurant(START_SEQ + 1, "ITAKA", true);
     public static final Restaurant RESTAURANT_3 = new Restaurant(START_SEQ + 2, "Hunter Village");
 
     public static final Dish DISH_1 = new Dish(START_SEQ + 3, "Soup");
@@ -87,6 +87,10 @@ public class VoteTestData {
 
     public static final Restaurant NEW_RESTAURANT_1 = new Restaurant("CoCo Bongo");
 
+    public static final VoteLog VOTE_LOG_NEW = new VoteLog(TEST_USER_3, RESTAURANT_1);
+
+    public static final List<Menu> DAILY_MENU_LIST = Arrays.asList(MENU_1, MENU_2);
+
     //-----------------------------------
     public static final DishTo DISH_TO_1 = new DishTo(START_SEQ + 3, 15.0);
     public static final DishTo DISH_TO_2 = new DishTo(START_SEQ + 4, 10.0);
@@ -94,7 +98,7 @@ public class VoteTestData {
     public static final DishTo DISH_TO_4 = new DishTo(START_SEQ + 24, 22.1);//TODO WRONG ID
 
     public static final List<Dish> DISH_LIST = Arrays.asList(DISH_1, DISH_2, DISH_3, DISH_4, DISH_5);
-    public static final List<Menu> DAILY_MENU_LIST = Arrays.asList(MENU_1);
+
 
     public static final List<HistoryItem> HISTORY_ITEM_LIST = Arrays.asList(HISTORY_ITEM_1, HISTORY_ITEM_2, HISTORY_ITEM_3);
 

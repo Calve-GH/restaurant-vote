@@ -8,10 +8,12 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
     private static final long serialVersionUID = 1L;
 
     private UserTo userTo;
+    private User user;
 
     public AuthorizedUser(User user) {
         super(user.getEmail(), user.getPassword(), user.isEnabled(), true, true, true, user.getRoles());
         this.userTo = UserUtil.asTo(user);
+        this.user = user;
     }
 
     public int getId() {
@@ -25,6 +27,8 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
     public UserTo getUserTo() {
         return userTo;
     }
+
+    public User getUser() {return user;}
 
     @Override
     public String toString() {

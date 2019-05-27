@@ -31,6 +31,14 @@ public class MenuTo extends BaseTo implements Serializable {
         this.menuItems = menuItems;
     }
 
+    public MenuTo(Integer id, @NotNull LocalDate date, @NotNull Restaurant restaurant, @Size(min = 2, max = 5) List<MenuItem> menuItems, Integer voteCount) {
+        this.id = id;
+        this.date = date;
+        this.restaurant = restaurant;
+        this.menuItems = menuItems;
+        this.voteCount = voteCount;
+    }
+
     public Integer getVoteCount() {
         return voteCount;
     }

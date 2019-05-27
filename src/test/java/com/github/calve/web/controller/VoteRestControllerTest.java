@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
+import javax.swing.plaf.synth.SynthScrollBarUI;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -43,35 +45,22 @@ class VoteRestControllerTest extends AbstractControllerTest {
 
     @Test
     void voteUserSuccess() throws Exception {
-        mockMvc.perform(put(REST_URL + "vote?id=" + RESTAURANT_1.getId())
-                .with(userHttpBasic(TEST_USER_1)))
+        mockMvc.perform(post(REST_URL + "vote?id=" + RESTAURANT_1.getId())
+                .with(userHttpBasic(TEST_USER_3)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        List<String> list = voteLogRepo.findAll().stream().map(VoteLog::toString).collect(Collectors.toList());
-        assertTrue(list.contains(VOTE_LOG_1.toString()));
+        List<String> list = voteLogRepo.findAllWithReferences().stream().map(VoteLog::toString).collect(Collectors.toList());
+        assertTrue(list.contains(VOTE_LOG_NEW.toString()));
+        assertEquals(menuRepo.findByDateAndRestaurantId(LocalDate.now(), RESTAURANT_1.getId()).getVoteCount(), 12);
     }
 
     @Test
     void voteByWrongRestaurantIdFail() throws Exception {
-        mockMvc.perform(put(REST_URL + "vote?id=123")
+        mockMvc.perform(post(REST_URL + "vote?id=123")
                 .with(userHttpBasic(TEST_USER_1)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
-    }
-
-    @Disabled
-    @Test
-//Body = {"url":"http://localhost/rest/profile/vote/","detail":"Period of change vote is expired."}
-        //pass if server time less than 11:00
-    void unlockVoteSuccess() throws Exception {
-        mockMvc.perform(delete(REST_URL + "vote/")
-                .with(userHttpBasic(TEST_ADMIN_1)))
-                .andDo(print())
-                .andExpect(status().isNoContent());
-
-        assertEquals(menuRepo.getWithMenuItems(RESTAURANT_1.getId()).getVoteCount(), 10);
-
     }
 
     @Test
@@ -90,8 +79,6 @@ class VoteRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
-
-
     @Test
     void getVoteHistorySuccess() throws Exception {
         Collections.sort(HISTORY_ITEM_LIST, HISTORY_ITEM_COMPARATOR_DESC);
@@ -102,7 +89,7 @@ class VoteRestControllerTest extends AbstractControllerTest {
                 .andExpect(result -> assertThat(readListFromJsonMvcResult(result, HistoryItem.class)).isEqualTo(HISTORY_ITEM_LIST));
     }
 
-    @Test
+    @Test//TODO
     void getVoteHistoryByRestaurantSuccess() throws Exception {
         List<HistoryItem> listDesc = Arrays.asList(HISTORY_ITEM_1, HISTORY_ITEM_2);
         Collections.sort(listDesc, HISTORY_ITEM_COMPARATOR_DESC);

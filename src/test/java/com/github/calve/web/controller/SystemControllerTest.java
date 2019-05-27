@@ -29,7 +29,7 @@ public class SystemControllerTest extends AbstractControllerTest {
     @Test
     void testResetAndLogSystem() {
         systemService.resetAndLogVoteSystem();
-        assertEquals(historyRepo.findAll().size(), 4);
+        assertEquals(historyRepo.findAll().size(), 5);
         assertEquals(voteLogRepo.findAll().size(), 0);
         assertEquals(menuItemRepo.findAll().size(), 0);
         assertEquals(voteLogRepo.findAll().size(), 0);

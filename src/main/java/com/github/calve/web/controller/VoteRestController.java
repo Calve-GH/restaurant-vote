@@ -2,12 +2,11 @@ package com.github.calve.web.controller;
 
 import com.github.calve.UserUtil;
 import com.github.calve.model.*;
-import com.github.calve.service.SystemService;
 import com.github.calve.repository.datajpa.*;
+import com.github.calve.service.SystemService;
 import com.github.calve.service.UserService;
 import com.github.calve.to.UserTo;
 import com.github.calve.util.ValidationUtil;
-import com.github.calve.util.exception.IllegalRequestDataException;
 import com.github.calve.web.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,27 +61,18 @@ public class VoteRestController {
         this.systemRepository = systemRepository;
     }//TODO ALL AUTOWIRED IN CONSTRUCTORS
 
-    @PutMapping("/vote")//@RequestParam
+    @PostMapping("/vote")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @Transactional
-    void vote(@RequestParam Integer id) { //@PathVariable
-        User user = userRepo.getOne(SecurityUtil.authUserId());
-        ValidationUtil.checkNotFound(user, "current user id");
+    void vote(@RequestParam Integer id) {
+        User user = SecurityUtil.get().getUser();
         Restaurant restaurant = restaurantRepo.findById(id).orElse(null);
-        ValidationUtil.checkNotFound(restaurant, "current restaurant id");
+        ValidationUtil.checkNotFound(restaurant, "current id");
         if (restaurant.getMenuExist()) {
             VoteLog voteLog = new VoteLog(user, restaurant);
+            voteLogRepo.delete(voteLog.getUser().getId(), voteLog.getDate());
             voteLogRepo.save(voteLog);
         }
-    }
-
-    @DeleteMapping("/vote")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    void unlockVote() {
-        if (CHANGE_VOTING_ENABLE)
-            //voteLogRepo.delete(SecurityUtil.authUserId());
-        //else
-            throw new IllegalRequestDataException("Period of change vote is expired.");
     }
 
     @GetMapping
@@ -100,11 +90,6 @@ public class VoteRestController {
         return historyRepo.findByRestaurantId(id);
     }
 
-    @GetMapping("/vote/restaurants")
-    List<Restaurant> getRestaurants() {
-        return restaurantRepo.getAll();
-    }
-
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
     public ResponseEntity<User> register(@RequestBody UserTo userTo) throws Exception {
@@ -118,10 +103,6 @@ public class VoteRestController {
 
     @Transactional
     User createUser(@RequestBody UserTo userTo) throws Exception {
-/*        if (!userTo.isRestaurantEmpty()) {
-            Restaurant restaurant = restaurantRepo.save(new Restaurant(userTo.getNewRestaurantName()));
-            userTo.setRestaurant(restaurant);
-        }*/
         User user = UserUtil.createNewFromTo(userTo);
         checkNew(user);
         return userService.create(user);

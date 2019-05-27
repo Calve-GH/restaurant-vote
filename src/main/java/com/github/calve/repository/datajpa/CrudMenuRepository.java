@@ -19,8 +19,9 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
 
     @CacheEvict(value = "menus", allEntries = true)
     @Transactional
+    @Modifying
     @Query("DELETE FROM Menu m WHERE m.id=:id")
-    int delete(Integer id);
+    int delete(@Param("id")Integer id);
 
 
     @CacheEvict(value = {"menus", "restaurants"})
@@ -44,7 +45,6 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
     Menu getWithMenuItems(Integer id);
 
 //----------------------
-    @Transactional
     @EntityGraph(attributePaths = {"restaurant", "items"}, type = EntityGraph.EntityGraphType.LOAD)
     List<Menu> findByDateBefore(LocalDate date);
 

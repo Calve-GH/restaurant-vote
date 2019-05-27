@@ -2,6 +2,7 @@ package com.github.calve.repository.datajpa;
 
 import com.github.calve.model.User;
 import com.github.calve.model.VoteLog;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,6 +30,10 @@ public interface CrudVoteLogRepo extends JpaRepository<VoteLog, Integer> {
     VoteLog findByDateAndUser(LocalDate date, User user);
 
     List<VoteLog> findAll();
+
+    @EntityGraph(attributePaths = {"user", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT v FROM VoteLog v ORDER BY v.date DESC")
+    List<VoteLog> findAllWithReferences();
 
     @Transactional
     @Override

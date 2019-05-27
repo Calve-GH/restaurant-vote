@@ -158,9 +158,9 @@ public class MenuRestController {
 
     @PostMapping("/dish")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void saveDish(@RequestBody String dishName) {
+    public void saveDish(@RequestBody Dish dish) {
         try {
-            dishRepo.save(new Dish(dishName));
+            dishRepo.save(dish);
         } catch (Exception e) {
             Throwable t = getCause(e);
             if (t.getMessage().contains(DISH_UNIQUE_NAME_IDX))
@@ -181,9 +181,9 @@ public class MenuRestController {
 
     @PostMapping("/restaurant")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void saveRestaurant(@RequestBody String restaurantName) {
+    public void saveRestaurant(@RequestBody Restaurant restaurant) {
         try {
-            restaurantRepo.save(new Restaurant(restaurantName));
+            restaurantRepo.save(restaurant);
         } catch (Exception e) {
             Throwable t = getCause(e);
             if (t.getMessage().contains(RESTAURANT_UNIQUE_NAME_IDX))
